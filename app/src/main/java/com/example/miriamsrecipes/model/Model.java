@@ -15,7 +15,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-final class Model {
+final class Model implements IModelContract {
 	
 	private final List<Recipe> allRecipes;
 	private final InputStream rawJson;
@@ -35,6 +35,7 @@ final class Model {
 	}
 	
 	
+	@Override
 	public Single<List<Recipe>> getRecipes() {
 		if (allRecipes.isEmpty()) {
 			// This check ensure that parsing happens off the main thread
