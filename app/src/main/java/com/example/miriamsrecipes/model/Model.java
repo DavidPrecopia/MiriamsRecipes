@@ -15,7 +15,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-final class Model implements IModelContract {
+public final class Model implements IModelContract {
 	
 	private final List<Recipe> allRecipes;
 	private final InputStream rawJson;
