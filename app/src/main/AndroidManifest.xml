@@ -4,6 +4,7 @@
 	package="com.example.miriamsrecipes">
 	
 	<application
+		android:name=".activities.MyApplication"
 		android:allowBackup="false"
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
