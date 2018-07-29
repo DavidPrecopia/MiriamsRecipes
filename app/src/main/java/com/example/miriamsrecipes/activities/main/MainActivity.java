@@ -26,6 +26,6 @@ public class MainActivity extends AppCompatActivity {
 		Intent intent = new Intent(this, RecipeActivity.class);
 		// Grab specific recipe
 //		intent.putExtra(RecipeActivity.class.getSimpleName(), viewModel.getRecipes().getValue().get(0));
-		startActivity(intent);
+//		startActivity(intent);
 	}
 }
