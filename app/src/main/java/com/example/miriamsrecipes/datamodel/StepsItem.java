@@ -1,6 +1,9 @@
 package com.example.miriamsrecipes.datamodel;
 
-public class StepsItem{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class StepsItem implements Parcelable {
 	
 	private int id;
 	
@@ -11,23 +14,63 @@ public class StepsItem{
 	private String thumbnailURL;
 	
 	
-	public int getId(){
+	public int getId() {
 		return id;
 	}
 	
-	public String getDescription(){
+	public String getDescription() {
 		return description;
 	}
 	
-	public String getShortDescription(){
+	public String getShortDescription() {
 		return shortDescription;
 	}
 	
-	public String getVideoURL(){
+	public String getVideoURL() {
 		return videoURL;
 	}
-
-	public String getThumbnailURL(){
+	
+	public String getThumbnailURL() {
 		return thumbnailURL;
 	}
+	
+	
+	/**
+	 * Implementation of Parcelable
+	 */
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
+	@Override
+	public void writeToParcel(Parcel parcel, int i) {
+		
+		parcel.writeInt(id);
+		parcel.writeString(shortDescription);
+		parcel.writeString(description);
+		parcel.writeString(videoURL);
+		parcel.writeString(thumbnailURL);
+	}
+	
+	private StepsItem(Parcel in) {
+		id = in.readInt();
+		shortDescription = in.readString();
+		description = in.readString();
+		videoURL = in.readString();
+		thumbnailURL = in.readString();
+	}
+	
+	public static final Creator<StepsItem> CREATOR = new Creator<StepsItem>() {
+		@Override
+		public StepsItem createFromParcel(Parcel in) {
+			return new StepsItem(in);
+		}
+		
+		@Override
+		public StepsItem[] newArray(int size) {
+			return new StepsItem[size];
+		}
+	};
 }
