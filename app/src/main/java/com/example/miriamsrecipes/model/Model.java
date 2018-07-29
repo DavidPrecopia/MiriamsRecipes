@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+
 final class Model {
 	
 	private final List<Recipe> allRecipes;
@@ -33,12 +35,12 @@ final class Model {
 	}
 	
 	
-	public List<Recipe> getRecipes() {
-		// Ensure that this happens off the main thread
+	public Single<List<Recipe>> getRecipes() {
 		if (allRecipes.isEmpty()) {
+			// This check ensure that parsing happens off the main thread
 			parseJson();
 		}
-		return allRecipes;
+		return Single.just(allRecipes);
 	}
 	
 	private void parseJson() {
