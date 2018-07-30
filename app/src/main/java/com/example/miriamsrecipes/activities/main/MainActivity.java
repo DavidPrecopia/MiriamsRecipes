@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
 	private void init() {
 		displayLoading();
 		setUpToolbar();
-		setUpRecyclerView();
 		setUpViewModel();
+		setUpRecyclerView();
 		observeRecipes();
 	}
 	
@@ -65,11 +65,26 @@ public class MainActivity extends AppCompatActivity {
 	private void setUpRecyclerView() {
 		RecyclerView recyclerView = binding.recyclerView;
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.addItemDecoration(getDividerItemDecoration(recyclerView, layoutManager));
 		recyclerView.setHasFixedSize(true);
-		recyclerViewRestoreData();
+		
+		recyclerViewAdapter = new RecipeAdapter();
+		restoreAdapterData();
 		recyclerView.setAdapter(recyclerViewAdapter);
+	}
+	
+	/**
+	 * Restoring data before setting this adapter as RecyclerView's adapter,
+	 * restores scroll state by RecyclerView itself.
+	 */
+	private void restoreAdapterData() {
+		List<Recipe> recipeList = viewModel.getRecipes().getValue();
+		if (recipeList == null || recipeList.isEmpty()) {
+			return;
+		}
+		recyclerViewAdapter.replaceData(recipeList);
 	}
 	
 	private RecyclerView.ItemDecoration getDividerItemDecoration(RecyclerView recyclerView, LinearLayoutManager layoutManager) {
@@ -77,19 +92,6 @@ public class MainActivity extends AppCompatActivity {
 				recyclerView.getContext(),
 				layoutManager.getOrientation()
 		);
-	}
-	
-	/**
-	 * Setting the data before the adapter is set,
-	 * restores scroll state on rotation
-	 */
-	private void recyclerViewRestoreData() {
-		List<Recipe> recipeList = viewModel.getRecipes().getValue();
-		if (recipeList == null) {
-			recyclerViewAdapter = new RecipeAdapter(new ArrayList<>());
-		} else {
-			recyclerViewAdapter = new RecipeAdapter(recipeList);
-		}
 	}
 	
 	
@@ -123,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
 		
 		private final List<Recipe> recipes;
 		
-		RecipeAdapter(List<Recipe> recipes) {
-			this.recipes = recipes;
+		RecipeAdapter() {
+			this.recipes = new ArrayList<>();
 		}
 		
 		@NonNull
