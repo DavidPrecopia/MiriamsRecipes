@@ -5,7 +5,6 @@
 	android:layout_height="wrap_content"
 	tools:context=".activities.recipe.StepsFragment">
 	
-	<!--TODO Similar to MainActivity-->
 	
 	
 </android.support.constraint.ConstraintLayout>

@@ -3,7 +3,7 @@ package com.example.miriamsrecipes.datamodel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class StepsItem implements Parcelable {
+public class StepItem implements Parcelable {
 	
 	private int id;
 	
@@ -54,7 +54,7 @@ public class StepsItem implements Parcelable {
 		parcel.writeString(thumbnailURL);
 	}
 	
-	private StepsItem(Parcel in) {
+	private StepItem(Parcel in) {
 		id = in.readInt();
 		shortDescription = in.readString();
 		description = in.readString();
@@ -62,15 +62,15 @@ public class StepsItem implements Parcelable {
 		thumbnailURL = in.readString();
 	}
 	
-	public static final Creator<StepsItem> CREATOR = new Creator<StepsItem>() {
+	public static final Creator<StepItem> CREATOR = new Creator<StepItem>() {
 		@Override
-		public StepsItem createFromParcel(Parcel in) {
-			return new StepsItem(in);
+		public StepItem createFromParcel(Parcel in) {
+			return new StepItem(in);
 		}
 		
 		@Override
-		public StepsItem[] newArray(int size) {
-			return new StepsItem[size];
+		public StepItem[] newArray(int size) {
+			return new StepItem[size];
 		}
 	};
 }

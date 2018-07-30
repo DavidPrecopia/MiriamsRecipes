@@ -14,7 +14,7 @@ public class Recipe implements Parcelable {
 	private String image;
 	
 	private List<IngredientsItem> ingredients;
-	private List<StepsItem> steps;
+	private List<StepItem> steps;
 	
 	
 	public int getId(){
@@ -37,7 +37,7 @@ public class Recipe implements Parcelable {
 		return ingredients;
 	}
 
-	public List<StepsItem> getSteps(){
+	public List<StepItem> getSteps(){
 		return steps;
 	}
 	
@@ -67,7 +67,7 @@ public class Recipe implements Parcelable {
 		servings = in.readInt();
 		image = in.readString();
 		ingredients = in.createTypedArrayList(IngredientsItem.CREATOR);
-		steps = in.createTypedArrayList(StepsItem.CREATOR);
+		steps = in.createTypedArrayList(StepItem.CREATOR);
 	}
 	
 	public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
