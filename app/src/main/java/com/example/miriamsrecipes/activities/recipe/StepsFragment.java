@@ -19,18 +19,6 @@ public class StepsFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
-		
-		
-		
-		return rootView;
-	}
-	
-	
-	/**
-	 * Implemented
-	 */
-	interface StepClickedListener {
-		void onStopClicked();
+		return inflater.inflate(R.layout.fragment_steps, container, false);
 	}
 }
