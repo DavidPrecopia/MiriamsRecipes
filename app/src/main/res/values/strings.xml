@@ -1,3 +1,4 @@
 <resources>
 	<string name="app_name">MiriamsRecipes</string>
+	<string name="tv_serving_size_label">Serving Size:</string>
 </resources>
