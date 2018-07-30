@@ -3,6 +3,13 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools">
 	
+	<data>
+		
+		<variable
+			name="recipe"
+			type="com.example.miriamsrecipes.datamodel.Recipe" />
+	</data>
+	
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
