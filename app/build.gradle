@@ -45,6 +45,9 @@ dependencies {
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.8.2'
+
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
