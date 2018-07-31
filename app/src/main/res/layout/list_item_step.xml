@@ -13,7 +13,7 @@
 	
 	<android.support.v7.widget.CardView
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/touch_height_normal"
 		android:layout_marginBottom="@dimen/margin_medium"
 		android:layout_marginEnd="@dimen/margin_normal"
 		android:layout_marginStart="@dimen/margin_normal"
@@ -22,7 +22,7 @@
 		
 		<android.support.constraint.ConstraintLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="match_parent">
 			
 			<!--1 is added to the step's id because they have zero-based index-->
 			<TextView
@@ -32,25 +32,35 @@
 				android:layout_marginBottom="@dimen/margin_medium"
 				android:layout_marginStart="@dimen/margin_medium"
 				android:layout_marginTop="@dimen/margin_medium"
-				android:text="@{String.valueOf(step.id) + 1}"
+				android:text="@{String.valueOf(step.id + 1)}"
 				android:textAppearance="@style/TextPrimary"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
-				tools:text="0" />
+				tools:text="1" />
+			
+			<TextView
+				android:id="@+id/tv_step_number_separator"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/step_number_separator"
+				android:textAppearance="@style/TextPrimary"
+				app:layout_constraintBaseline_toBaselineOf="@+id/tv_step_number"
+				app:layout_constraintStart_toEndOf="@+id/tv_step_number" />
+			
 			
 			<TextView
 				android:id="@+id/tv_step_description"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="@dimen/margin_small"
+				android:layout_marginStart="@dimen/margin_medium"
 				android:text="@{step.shortDescription}"
 				android:textAppearance="@style/TextPrimary"
 				app:layout_constraintBaseline_toBaselineOf="@+id/tv_step_number"
 				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintHorizontal_bias="0.0"
-				app:layout_constraintStart_toEndOf="@+id/tv_step_number"
+				app:layout_constraintStart_toEndOf="@+id/tv_step_number_separator"
 				tools:text="Pre-heat the oven to 450 deg." />
+		
 		</android.support.constraint.ConstraintLayout>
 	</android.support.v7.widget.CardView>
 </layout>

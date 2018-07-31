@@ -5,11 +5,11 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 	
-	<style name="TextPrimary">
+	<style name="TextPrimary" parent="TextAppearance.AppCompat">
 		<item name="android:textAppearance">?attr/textAppearanceListItem</item>
 	</style>
 	
-	<style name="TextSecondary">
+	<style name="TextSecondary" parent="TextAppearance.AppCompat">
 		<item name="android:textAppearance">?attr/textAppearanceListItemSecondary</item>
 	</style>
 	

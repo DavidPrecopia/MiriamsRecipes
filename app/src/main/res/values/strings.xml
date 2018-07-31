@@ -2,4 +2,5 @@
 	<string name="app_name">MiriamsRecipes</string>
 	
 	<string name="tv_serving_size_label">Serving Size:</string>
+	<string name="step_number_separator">.</string>
 </resources>
