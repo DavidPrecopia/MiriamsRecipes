@@ -9,6 +9,7 @@
 	
 	<!--fragment_individual_step-->
 	<string name="step_label">Step:</string>
-	<string name="previous_step_arrow_description">Go to previous step</string>
-	<string name="next_step_arrow_description">Go to next step</string>
+	<string name="description_previous_step_arrow">Go to previous step</string>
+	<string name="description_next_step_arrow">Go to next step</string>
+	<string name="description_step_image">A picture depicting this step</string>
 </resources>

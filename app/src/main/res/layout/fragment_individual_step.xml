@@ -16,6 +16,49 @@
 		tools:context=".activities.recipe.IndividualStepFragment">
 		
 		
+		<ImageView
+			android:id="@+id/iv_step_image"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:scaleType="centerCrop"
+			android:contentDescription="@string/description_step_image"
+			app:layout_constraintBottom_toTopOf="@+id/guideline_center"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+		
+		<android.support.constraint.Guideline
+			android:id="@+id/guideline_center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintBottom_toBottomOf="@+id/step_navigation_layout"
+			app:layout_constraintGuide_percent="0.4"
+			app:layout_constraintTop_toTopOf="parent" />
+		
+		<android.support.v4.widget.NestedScrollView
+			android:id="@+id/nested_scroll_view"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_marginEnd="@dimen/margin_normal"
+			android:layout_marginStart="@dimen/margin_normal"
+			android:layout_marginTop="@dimen/margin_normal"
+			app:layout_constraintBottom_toTopOf="@+id/step_navigation_layout"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/guideline_center">
+			
+			<TextView
+				android:id="@+id/tv_description"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:minLines="1"
+				android:textAppearance="@style/TextPrimary"
+				tools:text="This is a step of a recipe - description of a step" />
+		
+		</android.support.v4.widget.NestedScrollView>
+		
+		
 		<android.support.constraint.ConstraintLayout
 			android:id="@+id/step_navigation_layout"
 			android:layout_width="match_parent"
@@ -33,11 +76,11 @@
 				android:layout_marginBottom="@dimen/margin_normal"
 				android:layout_marginStart="@dimen/margin_normal"
 				android:layout_marginTop="@dimen/margin_normal"
+				android:contentDescription="@string/description_previous_step_arrow"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
-				app:srcCompat="@drawable/ic_arrow_previous_24dp"
-				android:contentDescription="@string/previous_step_arrow_description" />
+				app:srcCompat="@drawable/ic_arrow_previous_24dp" />
 			
 			
 			<TextView
@@ -51,11 +94,11 @@
 				android:textAppearance="@style/TextSecondary"
 				android:textColor="@color/white"
 				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toStartOf="@+id/center_guideline"
+				app:layout_constraintEnd_toStartOf="@+id/guideline_navigation_center"
 				app:layout_constraintTop_toTopOf="parent" />
 			
 			<android.support.constraint.Guideline
-				android:id="@+id/center_guideline"
+				android:id="@+id/guideline_navigation_center"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
@@ -80,11 +123,11 @@
 				android:layout_marginBottom="@dimen/margin_normal"
 				android:layout_marginEnd="@dimen/margin_normal"
 				android:layout_marginTop="@dimen/margin_normal"
+				android:contentDescription="@string/description_next_step_arrow"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
-				app:srcCompat="@drawable/ic_arrow_forward_24dp"
-				android:contentDescription="@string/next_step_arrow_description" />
+				app:srcCompat="@drawable/ic_arrow_forward_24dp" />
 		
 		</android.support.constraint.ConstraintLayout>
 	
