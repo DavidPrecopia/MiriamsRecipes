@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.FragmentStepsBinding;
+import com.example.miriamsrecipes.databinding.ListItemStepBinding;
 import com.example.miriamsrecipes.datamodel.Recipe;
+import com.example.miriamsrecipes.datamodel.StepItem;
 
+import java.util.List;
 import java.util.Objects;
 
 import timber.log.Timber;
@@ -78,6 +82,61 @@ public class StepsFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		fragmentClickListener = null;
+	}
+	
+	
+	final class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHolder> {
+		
+		private final List<StepItem> stepsList;
+		
+		StepsAdapter(List<StepItem> stepsList) {
+			this.stepsList = stepsList;
+		}
+		
+		
+		@NonNull
+		@Override
+		public StepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+			return new StepViewHolder(
+					ListItemStepBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false)
+			);
+		}
+		
+		@Override
+		public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
+			ListItemStepBinding binding = holder.binding;
+			binding.setStep(stepsList.get(holder.getAdapterPosition()));
+			binding.executePendingBindings();
+		}
+		
+		void replaceData(List<StepItem> newSteps) {
+			stepsList.clear();
+			stepsList.addAll(newSteps);
+			notifyDataSetChanged();
+		}
+		
+		@Override
+		public int getItemCount() {
+			return stepsList.size();
+		}
+		
+		
+		final class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+		
+			private final ListItemStepBinding binding;
+			
+			StepViewHolder(ListItemStepBinding binding) {
+				super(binding.getRoot());
+				this.binding = binding;
+			}
+			
+			@Override
+			public void onClick(View view) {
+				fragmentClickListener.onStepClick(
+						stepsList.get(getAdapterPosition()).getId()
+				);
+			}
+		}
 	}
 	
 	
