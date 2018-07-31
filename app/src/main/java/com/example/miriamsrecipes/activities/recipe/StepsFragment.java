@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -71,7 +73,11 @@ public class StepsFragment extends Fragment {
 	}
 	
 	private void setUpToolbar() {
-		binding.appBar.toolbar.setTitle(viewModel.getRecipe().getName());
+		((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(binding.appBar.toolbar);
+		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+		assert actionBar != null;
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(viewModel.getRecipe().getName());
 	}
 	
 	private void setFragmentClickListener() {
@@ -135,7 +141,7 @@ public class StepsFragment extends Fragment {
 		
 		
 		final class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		
+			
 			private final ListItemStepBinding binding;
 			
 			StepViewHolder(ListItemStepBinding binding) {
