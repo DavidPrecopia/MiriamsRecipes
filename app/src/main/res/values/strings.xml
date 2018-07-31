@@ -1,6 +1,14 @@
 <resources>
 	<string name="app_name">MiriamsRecipes</string>
 	
+	<!--list_item_recipe-->
 	<string name="tv_serving_size_label">Serving Size:</string>
+	
+	<!--list_item_step-->
 	<string name="step_number_separator">.</string>
+	
+	<!--fragment_individual_step-->
+	<string name="step_label">Step:</string>
+	<string name="previous_step_arrow_description">Go to previous step</string>
+	<string name="next_step_arrow_description">Go to next step</string>
 </resources>
