@@ -11,4 +11,8 @@ final class SharedFragmentsViewModel extends ViewModel {
 	SharedFragmentsViewModel(Recipe recipe) {
 		this.recipe = recipe;
 	}
+	
+	Recipe getRecipe() {
+		return recipe;
+	}
 }
