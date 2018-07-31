@@ -128,12 +128,6 @@ public class StepsFragment extends Fragment {
 			binding.executePendingBindings();
 		}
 		
-		void replaceData(List<StepItem> newSteps) {
-			stepsList.clear();
-			stepsList.addAll(newSteps);
-			notifyDataSetChanged();
-		}
-		
 		@Override
 		public int getItemCount() {
 			return stepsList.size();
@@ -147,6 +141,7 @@ public class StepsFragment extends Fragment {
 			StepViewHolder(ListItemStepBinding binding) {
 				super(binding.getRoot());
 				this.binding = binding;
+				binding.getRoot().setOnClickListener(this);
 			}
 			
 			@Override
