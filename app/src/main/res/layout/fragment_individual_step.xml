@@ -16,16 +16,24 @@
 		tools:context=".activities.recipe.IndividualStepFragment">
 		
 		
-		<ImageView
-			android:id="@+id/iv_step_image"
+		<FrameLayout
+			android:id="@+id/media_holder"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
-			android:scaleType="centerCrop"
 			android:contentDescription="@string/description_step_image"
 			app:layout_constraintBottom_toTopOf="@+id/guideline_center"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
+			app:layout_constraintTop_toTopOf="parent">
+			
+			<ImageView
+				android:id="@+id/iv_picture"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:contentDescription="@string/description_step_image"
+				android:scaleType="centerCrop" />
+		
+		</FrameLayout>
 		
 		<android.support.constraint.Guideline
 			android:id="@+id/guideline_center"

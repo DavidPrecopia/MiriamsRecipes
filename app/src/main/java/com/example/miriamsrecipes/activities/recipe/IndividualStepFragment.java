@@ -51,8 +51,8 @@ public class IndividualStepFragment extends Fragment {
 		
 		// use step ID to get single recipe
 		
-		binding.ivStepImage.setImageResource(R.drawable.generic_cooking_picture);
-		
+		binding.ivPicture.setImageResource(R.drawable.generic_cooking_picture);
+
 		return binding.getRoot();
 	}
 	
