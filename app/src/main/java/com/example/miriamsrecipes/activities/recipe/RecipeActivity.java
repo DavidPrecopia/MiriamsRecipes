@@ -2,18 +2,24 @@ package com.example.miriamsrecipes.activities.recipe;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.miriamsrecipes.R;
 
-public class RecipeActivity extends AppCompatActivity implements StepsFragment.FragmentClickListener {
+public class RecipeActivity extends AppCompatActivity
+		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener {
+	
+	private FragmentManager fragmentManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DataBindingUtil.setContentView(this, R.layout.activity_recipe);
 		
+		fragmentManager = getSupportFragmentManager();
 		if (savedInstanceState == null) {
 			initializeFragment();
 		}
@@ -23,15 +29,28 @@ public class RecipeActivity extends AppCompatActivity implements StepsFragment.F
 		StepsFragment fragment = StepsFragment.newInstance(
 				getIntent().getParcelableExtra(RecipeActivity.class.getSimpleName())
 		);
-		getSupportFragmentManager().beginTransaction()
+		fragmentManager.beginTransaction()
 				.add(R.id.fragment_holder, fragment)
 				.commit();
 	}
 	
+	
 	@Override
 	public void onStepClick(int stepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId);
-		getSupportFragmentManager().beginTransaction()
+		replaceFragment(
+				SingleStepFragment.newInstance(stepId)
+		);
+	}
+	
+	@Override
+	public void onIngredientClick() {
+		replaceFragment(
+				IngredientsFragment.newInstance()
+		);
+	}
+	
+	private void replaceFragment(Fragment fragment) {
+		fragmentManager.beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
 				.addToBackStack(null)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

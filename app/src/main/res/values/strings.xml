@@ -13,7 +13,4 @@
 	<string name="description_next_step_arrow">Go to next step</string>
 	<string name="description_step_image">A picture depicting this step</string>
 	<string name="label_list_item_ingredients">Ingredients</string>
-	
-	<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -20,8 +20,8 @@ public class SingleStepFragment extends Fragment {
 	private static final String STEP_ID_KEY = "step_key";
 
 	private int stepId;
-	
 	private SharedFragmentsViewModel viewModel;
+	
 	private FragmentSingleStepBinding binding;
 	
 	
@@ -54,12 +54,5 @@ public class SingleStepFragment extends Fragment {
 		binding.ivPicture.setImageResource(R.drawable.generic_cooking_picture);
 
 		return binding.getRoot();
-	}
-	
-	
-	
-	@Override
-	public void onDetach() {
-		super.onDetach();
 	}
 }

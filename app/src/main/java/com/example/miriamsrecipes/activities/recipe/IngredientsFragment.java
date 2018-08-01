@@ -1,66 +1,101 @@
 package com.example.miriamsrecipes.activities.recipe;
 
-
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.miriamsrecipes.R;
+import com.example.miriamsrecipes.databinding.FragmentIngredientsBinding;
+import com.example.miriamsrecipes.databinding.ListItemIngredientBinding;
+import com.example.miriamsrecipes.datamodel.IngredientsItem;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link IngredientsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+import java.util.Objects;
+
 public class IngredientsFragment extends Fragment {
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
 	
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
+	private SharedFragmentsViewModel viewModel;
+	private FragmentIngredientsBinding binding;
 	
 	
 	public IngredientsFragment() {
-		// Required empty public constructor
 	}
 	
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param param1 Parameter 1.
-	 * @param param2 Parameter 2.
-	 * @return A new instance of fragment IngredientsFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
-	public static IngredientsFragment newInstance(String param1, String param2) {
-		IngredientsFragment fragment = new IngredientsFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
+	public static IngredientsFragment newInstance() {
+		return new IngredientsFragment();
 	}
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
-		}
+		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(SharedFragmentsViewModel.class);
 	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_ingredients, container, false);
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredients, container, false);
+		setUpRecyclerView();
+		return binding.getRoot();
 	}
 	
+	private void setUpRecyclerView() {
+		RecyclerView recyclerView = binding.recyclerView;
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.setAdapter(new IngredientAdapter(viewModel.getRecipe().getIngredients()));
+	}
+	
+	
+	final class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+		
+		private final List<IngredientsItem> ingredientsList;
+		
+		IngredientAdapter(List<IngredientsItem> ingredientsList) {
+			this.ingredientsList = ingredientsList;
+		}
+		
+		
+		@NonNull
+		@Override
+		public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+			return new IngredientViewHolder(
+					ListItemIngredientBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false)
+			);
+		}
+		
+		@Override
+		public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
+			holder.bindView();
+		}
+		
+		@Override
+		public int getItemCount() {
+			return ingredientsList.size();
+		}
+		
+		
+		final class IngredientViewHolder extends RecyclerView.ViewHolder {
+			
+			private ListItemIngredientBinding binding;
+			
+			IngredientViewHolder(ListItemIngredientBinding binding) {
+				super(binding.getRoot());
+				this.binding = binding;
+			}
+			
+			private void bindView() {
+				binding.setIngredient(ingredientsList.get(getAdapterPosition()));
+				binding.executePendingBindings();
+			}
+		}
+	}
 }

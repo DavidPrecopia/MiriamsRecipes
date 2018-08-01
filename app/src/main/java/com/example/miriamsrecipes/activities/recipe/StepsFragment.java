@@ -33,6 +33,7 @@ public class StepsFragment extends Fragment {
 	private SharedFragmentsViewModel viewModel;
 	
 	private FragmentClickListener fragmentClickListener;
+	private IngredientClickListener ingredientClickListener;
 	
 	
 	public StepsFragment() {
@@ -69,6 +70,7 @@ public class StepsFragment extends Fragment {
 	private void init() {
 		setUpToolbar();
 		setFragmentClickListener();
+		setIngredientsClickListener();
 		setUpRecyclerView();
 	}
 	
@@ -83,17 +85,25 @@ public class StepsFragment extends Fragment {
 	private void setFragmentClickListener() {
 		try {
 			fragmentClickListener = (FragmentClickListener) getActivity();
-		} catch (Exception e) {
+		} catch (ClassCastException e) {
 			Timber.e(e);
-			throw new ClassCastException("The parent Activity must implement FragmentClickListener");
 		}
+	}
+	
+	private void setIngredientsClickListener() {
+		try {
+			ingredientClickListener = (IngredientClickListener) getActivity();
+		} catch (ClassCastException e) {
+			Timber.e(e);
+		}
+		binding.ingredientListItem.setOnClickListener(view -> ingredientClickListener.onIngredientClick());
 	}
 	
 	private void setUpRecyclerView() {
 		RecyclerView recyclerView = binding.recyclerView;
 		recyclerView.setNestedScrollingEnabled(false);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setHasFixedSize(true);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setAdapter(new StepsAdapter(viewModel.getRecipe().getSteps()));
 	}
 	
@@ -102,6 +112,7 @@ public class StepsFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		fragmentClickListener = null;
+		ingredientClickListener = null;
 	}
 	
 	
@@ -160,5 +171,9 @@ public class StepsFragment extends Fragment {
 	
 	public interface FragmentClickListener {
 		void onStepClick(int stepId);
+	}
+	
+	public interface IngredientClickListener {
+		void onIngredientClick();
 	}
 }
