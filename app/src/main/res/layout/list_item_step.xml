@@ -12,13 +12,7 @@
 	</data>
 	
 	<android.support.v7.widget.CardView
-		android:layout_width="match_parent"
-		android:layout_height="@dimen/touch_height_normal"
-		android:layout_marginBottom="@dimen/margin_medium"
-		android:layout_marginEnd="@dimen/margin_normal"
-		android:layout_marginStart="@dimen/margin_normal"
-		android:layout_marginTop="@dimen/margin_medium"
-		app:cardCornerRadius="8dp">
+		style="@style/ListItemCardView" >
 		
 		<android.support.constraint.ConstraintLayout
 			android:layout_width="match_parent"
@@ -53,7 +47,7 @@
 				android:id="@+id/tv_step_description"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="@dimen/margin_medium"
+				android:layout_marginStart="@dimen/margin_small"
 				android:text="@{step.shortDescription}"
 				android:textAppearance="@style/TextPrimary"
 				app:layout_constraintBaseline_toBaselineOf="@+id/tv_step_number"

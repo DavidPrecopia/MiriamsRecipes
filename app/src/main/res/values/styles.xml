@@ -1,4 +1,5 @@
 <resources>
+	
 	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -14,4 +15,13 @@
 	</style>
 	
 	
+	<style name="ListItemCardView">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">@dimen/touch_height_normal</item>
+		<item name="android:layout_marginBottom">@dimen/margin_medium</item>
+		<item name="android:layout_marginEnd">@dimen/margin_normal</item>
+		<item name="android:layout_marginStart">@dimen/margin_normal</item>
+		<item name="android:layout_marginTop">@dimen/margin_medium</item>
+		<item name="cardCornerRadius">@dimen/corner_radius</item>
+	</style>
 </resources>
