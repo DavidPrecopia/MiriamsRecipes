@@ -139,9 +139,7 @@ public class MainActivity extends AppCompatActivity {
 		
 		@Override
 		public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-			ListItemRecipeBinding binding = holder.binding;
-			binding.setRecipe(recipes.get(holder.getAdapterPosition()));
-			binding.executePendingBindings();
+			holder.bindView();
 		}
 		
 		void replaceData(List<Recipe> newRecipes) {
@@ -164,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
 				super(binding.getRoot());
 				this.binding = binding;
 				binding.getRoot().setOnClickListener(this);
+			}
+			
+			private void bindView() {
+				binding.setRecipe(recipes.get(getAdapterPosition()));
+				binding.executePendingBindings();
 			}
 			
 			@Override
