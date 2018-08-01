@@ -10,11 +10,46 @@
 			android:id="@+id/app_bar"
 			layout="@layout/app_bar_layout" />
 		
-		<android.support.v7.widget.RecyclerView
-			android:id="@+id/recycler_view"
+		<android.support.v4.widget.NestedScrollView
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+			
+			<android.support.constraint.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+				
+				<android.support.v7.widget.CardView
+					android:id="@+id/ingredient_list_item"
+					style="@style/ListItemCardView"
+					android:focusableInTouchMode="true"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toTopOf="parent">
+					
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="start|center_vertical"
+						android:layout_margin="@dimen/margin_medium"
+						android:text="@string/label_list_item_ingredients"
+						android:textAppearance="@style/TextPrimary" />
+				
+				</android.support.v7.widget.CardView>
+				
+				<android.support.v7.widget.RecyclerView
+					android:id="@+id/recycler_view"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginTop="@dimen/margin_medium"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/ingredient_list_item" />
+			</android.support.constraint.ConstraintLayout>
 		
+		
+		</android.support.v4.widget.NestedScrollView>
+	
+	
 	</android.support.design.widget.CoordinatorLayout>
 </layout>
