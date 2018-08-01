@@ -7,7 +7,7 @@
 	<!--list_item_step-->
 	<string name="step_number_separator">.</string>
 	
-	<!--fragment_individual_step-->
+	<!--fragment_single_step-->
 	<string name="step_label">Step:</string>
 	<string name="description_previous_step_arrow">Go to previous step</string>
 	<string name="description_next_step_arrow">Go to next step</string>

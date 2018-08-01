@@ -30,7 +30,7 @@ public class RecipeActivity extends AppCompatActivity implements StepsFragment.F
 	
 	@Override
 	public void onStepClick(int stepId) {
-		IndividualStepFragment fragment = IndividualStepFragment.newInstance(stepId);
+		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
 				.addToBackStack(null)

@@ -11,25 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.miriamsrecipes.R;
-import com.example.miriamsrecipes.databinding.FragmentIndividualStepBinding;
+import com.example.miriamsrecipes.databinding.FragmentSingleStepBinding;
 
 import java.util.Objects;
 
-public class IndividualStepFragment extends Fragment {
+public class SingleStepFragment extends Fragment {
 	
 	private static final String STEP_ID_KEY = "step_key";
 
 	private int stepId;
 	
 	private SharedFragmentsViewModel viewModel;
-	private FragmentIndividualStepBinding binding;
+	private FragmentSingleStepBinding binding;
 	
 	
-	public IndividualStepFragment() {
+	public SingleStepFragment() {
 	}
 	
-	public static IndividualStepFragment newInstance(int stepId) {
-		IndividualStepFragment fragment = new IndividualStepFragment();
+	public static SingleStepFragment newInstance(int stepId) {
+		SingleStepFragment fragment = new SingleStepFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(STEP_ID_KEY, stepId);
 		fragment.setArguments(bundle);
@@ -47,7 +47,7 @@ public class IndividualStepFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_individual_step, container, false);
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_single_step, container, false);
 		
 		// use step ID to get single recipe
 		
