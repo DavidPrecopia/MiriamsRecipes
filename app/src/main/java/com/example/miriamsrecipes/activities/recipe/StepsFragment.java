@@ -102,8 +102,8 @@ public class StepsFragment extends Fragment {
 	private void setUpRecyclerView() {
 		RecyclerView recyclerView = binding.recyclerView;
 		recyclerView.setNestedScrollingEnabled(false);
-		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(new StepsAdapter(viewModel.getRecipe().getSteps()));
 	}
 	

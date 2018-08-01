@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ public class IngredientsFragment extends Fragment {
 		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(SharedFragmentsViewModel.class);
 	}
 	
+	
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -49,9 +51,19 @@ public class IngredientsFragment extends Fragment {
 	
 	private void setUpRecyclerView() {
 		RecyclerView recyclerView = binding.recyclerView;
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+		
+		recyclerView.setLayoutManager(linearLayoutManager);
+		recyclerView.addItemDecoration(getDividerItemDecoration(recyclerView, linearLayoutManager));
 		recyclerView.setHasFixedSize(true);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setAdapter(new IngredientAdapter(viewModel.getRecipe().getIngredients()));
+	}
+	
+	private RecyclerView.ItemDecoration getDividerItemDecoration(RecyclerView recyclerView, LinearLayoutManager layoutManager) {
+		return new DividerItemDecoration(
+				recyclerView.getContext(),
+				layoutManager.getOrientation()
+		);
 	}
 	
 	
