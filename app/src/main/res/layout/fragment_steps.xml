@@ -46,10 +46,7 @@
 					app:layout_constraintRight_toRightOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/ingredient_list_item" />
 			</android.support.constraint.ConstraintLayout>
-		
-		
 		</android.support.v4.widget.NestedScrollView>
-	
-	
+		
 	</android.support.design.widget.CoordinatorLayout>
 </layout>

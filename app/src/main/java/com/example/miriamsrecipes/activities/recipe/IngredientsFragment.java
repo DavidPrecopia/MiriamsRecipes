@@ -45,8 +45,17 @@ public class IngredientsFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredients, container, false);
-		setUpRecyclerView();
+		init();
 		return binding.getRoot();
+	}
+	
+	private void init() {
+		setUpToolbar();
+		setUpRecyclerView();
+	}
+	
+	private void setUpToolbar() {
+		binding.appBar.toolbar.setTitle(R.string.title_ingredients_fragment);
 	}
 	
 	private void setUpRecyclerView() {
