@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 	
-	<android.support.v7.widget.CardView style="@style/ListItemCardView">
+	<data>
+		
+		<variable
+			name="ingredient"
+			type="com.example.miriamsrecipes.datamodel.IngredientsItem" />
+	</data>
+	
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 		
 		<TextView
+			android:id="@+id/tv_name"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="start|center_vertical"
-			android:layout_margin="@dimen/margin_medium"
-			android:text="@string/label_list_item_ingredients"
-			android:textAppearance="@style/TextPrimary" />
-	
-	</android.support.v7.widget.CardView>
+			android:layout_marginStart="@dimen/margin_normal"
+			android:layout_marginTop="@dimen/margin_medium"
+			android:text="@{ingredient.ingredient}"
+			android:textAppearance="@style/TextPrimary"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="light brown sugar" />
+		
+		<TextView
+			android:id="@+id/tv_quantity"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
+			android:layout_marginTop="@dimen/margin_small"
+			android:text="@{String.valueOf(ingredient.quantity)}"
+			android:textAppearance="@style/TextPrimary"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="@+id/tv_name"
+			app:layout_constraintTop_toBottomOf="@+id/tv_name"
+			tools:text="5" />
+		
+		<TextView
+			android:id="@+id/tv_measurement"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="@dimen/margin_small"
+			android:text="@{ingredient.measure}"
+			android:textAppearance="@style/TextPrimary"
+			app:layout_constraintBaseline_toBaselineOf="@+id/tv_quantity"
+			app:layout_constraintStart_toEndOf="@+id/tv_quantity"
+			tools:text="cup" />
+	</android.support.constraint.ConstraintLayout>
+
 </layout>
