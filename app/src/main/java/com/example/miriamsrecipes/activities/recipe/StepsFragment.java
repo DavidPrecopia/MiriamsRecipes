@@ -123,9 +123,7 @@ public class StepsFragment extends Fragment {
 		
 		@Override
 		public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
-			ListItemStepBinding binding = holder.binding;
-			binding.setStep(stepsList.get(holder.getAdapterPosition()));
-			binding.executePendingBindings();
+			holder.bindViews();
 		}
 		
 		@Override
@@ -142,6 +140,11 @@ public class StepsFragment extends Fragment {
 				super(binding.getRoot());
 				this.binding = binding;
 				binding.getRoot().setOnClickListener(this);
+			}
+			
+			void bindViews() {
+				binding.setStep(stepsList.get(getAdapterPosition()));
+				binding.executePendingBindings();
 			}
 			
 			@Override
