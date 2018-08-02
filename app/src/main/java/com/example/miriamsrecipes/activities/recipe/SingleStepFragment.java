@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.FragmentSingleStepBinding;
+import com.example.miriamsrecipes.datamodel.StepItem;
 
 import java.util.Objects;
 
@@ -54,16 +55,18 @@ public class SingleStepFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_single_step, container, false);
-		
-		// use step ID to get single recipe
-		
-		// Placeholder
-		binding.ivPicture.setImageResource(R.drawable.generic_cooking_picture);
-		
-		setStepChangeListeners();
-		bindStepIndicator();
-		
+		init(viewModel.getRecipe().getSteps().get(stepId));
 		return binding.getRoot();
+	}
+	
+	private void init(StepItem step) {
+		bindDescription(step.getDescription());
+		setStepChangeListeners();
+		bindStepIndicator(step.getId(), viewModel.getRecipe().getSteps().size());
+	}
+	
+	private void bindDescription(String description) {
+		binding.tvDescription.setText(description);
 	}
 	
 	private void setStepChangeListeners() {
@@ -96,9 +99,9 @@ public class SingleStepFragment extends Fragment {
 		});
 	}
 	
-	private void bindStepIndicator() {
+	private void bindStepIndicator(int stepId, int totalNumberOfSteps) {
 		binding.tvCurrentStep.setText(String.valueOf(stepId + 1));
-		binding.tvTotalSteps.setText(String.valueOf(viewModel.getRecipe().getSteps().size()));
+		binding.tvTotalSteps.setText(String.valueOf(totalNumberOfSteps));
 	}
 	
 	
