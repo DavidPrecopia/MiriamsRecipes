@@ -1,4 +1,4 @@
-package com.example.miriamsrecipes.activities;
+package com.example.miriamsrecipes.util;
 
 import android.app.Application;
 
