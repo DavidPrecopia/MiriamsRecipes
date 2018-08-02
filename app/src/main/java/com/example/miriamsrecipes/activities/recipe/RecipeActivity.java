@@ -15,6 +15,8 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private FragmentManager fragmentManager;
 	
+	private static final String BACKSTACK_TAG = "backstack_tag";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class RecipeActivity extends AppCompatActivity
 	private void replaceFragment(Fragment fragment) {
 		fragmentManager.beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
-				.addToBackStack(null)
+				.addToBackStack(BACKSTACK_TAG)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 				.commit();
 	}
@@ -74,8 +76,10 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void changeCurrentStep(Fragment fragment) {
+		fragmentManager.popBackStack(BACKSTACK_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		fragmentManager.beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
+				.addToBackStack(BACKSTACK_TAG)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.commit();
 	}
