@@ -169,11 +169,11 @@ public class StepsFragment extends Fragment {
 	}
 	
 	
-	public interface FragmentClickListener {
+	interface FragmentClickListener {
 		void onStepClick(int stepId);
 	}
 	
-	public interface IngredientClickListener {
+	interface IngredientClickListener {
 		void onIngredientClick();
 	}
 }
