@@ -10,7 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.miriamsrecipes.R;
 
 public class RecipeActivity extends AppCompatActivity
-		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener {
+		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
+		SingleStepFragment.ChangeStepListener {
 	
 	private FragmentManager fragmentManager;
 	
@@ -54,6 +55,28 @@ public class RecipeActivity extends AppCompatActivity
 				.replace(R.id.fragment_holder, fragment)
 				.addToBackStack(null)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				.commit();
+	}
+	
+	
+	@Override
+	public void onPrevious(int currentStepId) {
+		changeCurrentStep(
+				SingleStepFragment.newInstance(currentStepId - 1)
+		);
+	}
+	
+	@Override
+	public void onNext(int currentStepId) {
+		changeCurrentStep(
+				SingleStepFragment.newInstance(currentStepId + 1)
+		);
+	}
+	
+	private void changeCurrentStep(Fragment fragment) {
+		fragmentManager.beginTransaction()
+				.replace(R.id.fragment_holder, fragment)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.commit();
 	}
 }

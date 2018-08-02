@@ -15,14 +15,18 @@ import com.example.miriamsrecipes.databinding.FragmentSingleStepBinding;
 
 import java.util.Objects;
 
+import timber.log.Timber;
+
 public class SingleStepFragment extends Fragment {
 	
 	private static final String STEP_ID_KEY = "step_key";
-
+	
 	private int stepId;
 	private SharedFragmentsViewModel viewModel;
 	
 	private FragmentSingleStepBinding binding;
+	
+	private ChangeStepListener changeStepListener;
 	
 	
 	public SingleStepFragment() {
@@ -51,8 +55,29 @@ public class SingleStepFragment extends Fragment {
 		
 		// use step ID to get single recipe
 		
+		// Placeholder
 		binding.ivPicture.setImageResource(R.drawable.generic_cooking_picture);
-
+		
+		
+		setStepChangeListeners();
+		
 		return binding.getRoot();
+	}
+	
+	private void setStepChangeListeners() {
+		try {
+			changeStepListener = (ChangeStepListener) getActivity();
+		} catch (ClassCastException e) {
+			Timber.e(e);
+		}
+		binding.ivPreviousArrow.setOnClickListener(view -> changeStepListener.onPrevious(this.stepId));
+		binding.ivNextArrow.setOnClickListener(view -> changeStepListener.onNext(this.stepId));
+	}
+	
+	
+	interface ChangeStepListener {
+		void onPrevious(int currentStepId);
+		
+		void onNext(int currentStepId);
 	}
 }
