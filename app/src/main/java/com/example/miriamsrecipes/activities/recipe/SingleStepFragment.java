@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.FragmentSingleStepBinding;
@@ -74,10 +73,10 @@ public class SingleStepFragment extends Fragment {
 		binding.ivPreviousArrow.setOnClickListener(view -> changeStepListener.onPrevious(this.stepId));
 		binding.ivNextArrow.setOnClickListener(view -> changeStepListener.onNext(this.stepId));
 	}
-
+	
 	private void bindStepIndicator() {
-		TextView stepCount = binding.tvStepCount;
-		stepCount.setText(new StringBuilder().append(String.valueOf(stepId + 1)).append("/").append(String.valueOf(viewModel.getRecipe().getSteps().size())).toString());
+		binding.tvCurrentStep.setText(String.valueOf(stepId + 1));
+		binding.tvTotalSteps.setText(String.valueOf(viewModel.getRecipe().getSteps().size()));
 	}
 	
 	

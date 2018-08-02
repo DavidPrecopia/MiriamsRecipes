@@ -81,8 +81,8 @@
 				android:id="@+id/iv_previous_arrow"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:padding="@dimen/margin_normal"
 				android:contentDescription="@string/description_previous_step_arrow"
+				android:padding="@dimen/margin_normal"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
@@ -91,14 +91,13 @@
 			
 			<TextView
 				android:id="@+id/steps_label"
+				style="@style/SingleStepStepCounter"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="@dimen/margin_normal"
 				android:layout_marginEnd="2dp"
 				android:layout_marginTop="@dimen/margin_normal"
 				android:text="@string/step_label"
-				android:textAppearance="@style/TextSecondary"
-				android:textColor="@color/white"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toStartOf="@+id/guideline_navigation_center"
 				app:layout_constraintTop_toTopOf="parent" />
@@ -111,23 +110,40 @@
 				app:layout_constraintGuide_percent="0.5" />
 			
 			<TextView
-				android:id="@+id/tv_step_count"
+				android:id="@+id/tv_current_step"
+				style="@style/SingleStepStepCounter"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="2dp"
-				android:textAppearance="@style/TextSecondary"
-				android:textColor="@color/white"
 				app:layout_constraintBaseline_toBaselineOf="@+id/steps_label"
 				app:layout_constraintStart_toEndOf="@+id/steps_label"
-				tools:text="2/12" />
+				tools:text="5" />
+			
+			<TextView
+				android:id="@+id/tv_step_count_separator"
+				style="@style/SingleStepStepCounter"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/label_step_count_separator"
+				app:layout_constraintBaseline_toBaselineOf="@+id/steps_label"
+				app:layout_constraintStart_toEndOf="@+id/tv_current_step" />
+			
+			<TextView
+				android:id="@+id/tv_total_steps"
+				style="@style/SingleStepStepCounter"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintBaseline_toBaselineOf="@+id/steps_label"
+				app:layout_constraintStart_toEndOf="@+id/tv_step_count_separator"
+				tools:text="10" />
 			
 			
 			<ImageView
 				android:id="@+id/iv_next_arrow"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:padding="@dimen/margin_normal"
 				android:contentDescription="@string/description_next_step_arrow"
+				android:padding="@dimen/margin_normal"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent"

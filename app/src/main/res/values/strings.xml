@@ -1,6 +1,14 @@
 <resources>
 	<string name="app_name">MiriamsRecipes</string>
 	
+	
+	<!--IngredientsFragment-->
+	<string name="title_ingredients_fragment">Ingredients</string>
+	
+	<!--SingleStepFragment-->
+	<string name="label_step_count_separator">/</string>
+	
+	
 	<!--list_item_recipe-->
 	<string name="tv_serving_size_label">Serving Size:</string>
 	
@@ -13,8 +21,4 @@
 	<string name="description_next_step_arrow">Go to next step</string>
 	<string name="description_step_image">A picture depicting this step</string>
 	<string name="label_list_item_ingredients">Ingredients</string>
-	
-	
-	<!--IngredientsFragment-->
-	<string name="title_ingredients_fragment">Ingredients</string>
 </resources>

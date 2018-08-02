@@ -6,6 +6,7 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 	
+	
 	<style name="TextPrimary" parent="TextAppearance.AppCompat">
 		<item name="android:textAppearance">?attr/textAppearanceListItem</item>
 	</style>
@@ -23,5 +24,10 @@
 		<item name="android:layout_marginStart">@dimen/margin_normal</item>
 		<item name="android:layout_marginTop">@dimen/margin_medium</item>
 		<item name="cardCornerRadius">@dimen/corner_radius</item>
+	</style>
+	
+	<style name="SingleStepStepCounter">
+		<item name="android:textAppearance">@style/TextSecondary</item>
+		<item name="android:textColor">@color/white</item>
 	</style>
 </resources>
