@@ -9,12 +9,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.FragmentSingleStepBinding;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
 public class SingleStepFragment extends Fragment {
@@ -70,8 +72,28 @@ public class SingleStepFragment extends Fragment {
 		} catch (ClassCastException e) {
 			Timber.e(e);
 		}
-		binding.ivPreviousArrow.setOnClickListener(view -> changeStepListener.onPrevious(this.stepId));
-		binding.ivNextArrow.setOnClickListener(view -> changeStepListener.onNext(this.stepId));
+		setPreviousStepClickListener();
+		setNextStepClickListener();
+	}
+	
+	private void setPreviousStepClickListener() {
+		binding.ivPreviousArrow.setOnClickListener(view -> {
+			if (stepId == 0) {
+				Toasty.info(Objects.requireNonNull(getContext()), "This is the first step", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			changeStepListener.onPrevious(this.stepId);
+		});
+	}
+	
+	private void setNextStepClickListener() {
+		binding.ivNextArrow.setOnClickListener(view -> {
+			if (stepId == (viewModel.getRecipe().getSteps().size() - 1)) {
+				Toasty.info(Objects.requireNonNull(getContext()), "You've reached the last step", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			changeStepListener.onNext(this.stepId);
+		});
 	}
 	
 	private void bindStepIndicator() {
