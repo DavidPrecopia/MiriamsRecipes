@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--IngredientsFragment-->
+	<string name="title_ingredients_fragment">Ingredients</string>
+	
+	<!--SingleStepFragment-->
+	<string name="error_reached_first_step">This is the first step</string>
+	<string name="error_reached_last_step">You\'ve reached the last step</string>
+	<string name="label_step_count_separator">/</string>
+</resources>

@@ -79,7 +79,7 @@ public class SingleStepFragment extends Fragment {
 	private void setPreviousStepClickListener() {
 		binding.ivPreviousArrow.setOnClickListener(view -> {
 			if (stepId == 0) {
-				Toasty.info(Objects.requireNonNull(getContext()), "This is the first step", Toast.LENGTH_SHORT).show();
+				infoToast(getString(R.string.error_reached_first_step));
 				return;
 			}
 			changeStepListener.onPrevious(this.stepId);
@@ -89,7 +89,7 @@ public class SingleStepFragment extends Fragment {
 	private void setNextStepClickListener() {
 		binding.ivNextArrow.setOnClickListener(view -> {
 			if (stepId == (viewModel.getRecipe().getSteps().size() - 1)) {
-				Toasty.info(Objects.requireNonNull(getContext()), "You've reached the last step", Toast.LENGTH_SHORT).show();
+				infoToast(getString(R.string.error_reached_last_step));
 				return;
 			}
 			changeStepListener.onNext(this.stepId);
@@ -99,6 +99,11 @@ public class SingleStepFragment extends Fragment {
 	private void bindStepIndicator() {
 		binding.tvCurrentStep.setText(String.valueOf(stepId + 1));
 		binding.tvTotalSteps.setText(String.valueOf(viewModel.getRecipe().getSteps().size()));
+	}
+	
+	
+	private void infoToast(String message) {
+		Toasty.info(Objects.requireNonNull(getContext()), message, Toast.LENGTH_SHORT).show();
 	}
 	
 	
