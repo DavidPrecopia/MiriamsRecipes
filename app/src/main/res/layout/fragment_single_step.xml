@@ -31,8 +31,10 @@
 				android:id="@+id/video_player"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				app:show_timeout="1000"
-				android:visibility="gone"/>
+				android:visibility="gone"
+				app:fastforward_increment="5000"
+				app:rewind_increment="5000"
+				app:show_timeout="1000" />
 		
 		</FrameLayout>
 		
