@@ -306,11 +306,9 @@ public class SingleStepFragment extends Fragment {
 		public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 			if((playbackState == Player.STATE_READY) && playWhenReady){
 				// Video playing
-//				SingleStepFragment.this.playWhenReady = true;
 				SingleStepFragment.this.exoPlayer.setPlayWhenReady(true);
 			} else if((playbackState == Player.STATE_READY)){
 				// Video paused
-//				SingleStepFragment.this.playWhenReady = false;
 				SingleStepFragment.this.exoPlayer.setPlayWhenReady(false);
 			}
 		}
