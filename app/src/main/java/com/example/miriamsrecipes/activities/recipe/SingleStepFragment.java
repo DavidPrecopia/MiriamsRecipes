@@ -42,9 +42,7 @@ public class SingleStepFragment extends Fragment {
 	private SharedFragmentsViewModel viewModel;
 	private FragmentSingleStepBinding binding;
 	
-	private PlayerView videoPlayer;
 	private SimpleExoPlayer exoPlayer;
-	private boolean playWhenReady;
 	private long playbackPosition;
 	
 	private boolean haveVideo = false;
@@ -94,7 +92,6 @@ public class SingleStepFragment extends Fragment {
 			return;
 		}
 		playbackPosition = savedInstanceState.getLong(getString(R.string.key_player_position));
-		playWhenReady = savedInstanceState.getBoolean(getString(R.string.key_play_when_ready));
 	}
 	
 	
@@ -123,16 +120,14 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void setUpVideoPlayer() {
-		playWhenReady = true; // TODO Placeholder
-		
-		videoPlayer = binding.videoPlayer;
+		PlayerView videoPlayer = binding.videoPlayer;
 		videoPlayer.setVisibility(View.VISIBLE);
 		
 		exoPlayer = getExoPlayer();
 		exoPlayer.prepare(getMediaSource());
 		
 		videoPlayer.setPlayer(exoPlayer);
-		exoPlayer.setPlayWhenReady(playWhenReady);
+		exoPlayer.setPlayWhenReady(true);
 		exoPlayer.seekTo(0, playbackPosition);
 	}
 	
@@ -240,14 +235,12 @@ public class SingleStepFragment extends Fragment {
 	
 	private void savePlayerState() {
 		playbackPosition = exoPlayer.getCurrentPosition();
-		playWhenReady = exoPlayer.getPlayWhenReady();
 	}
 	
 	@Override
 	public void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
-		outState.putBoolean(getString(R.string.key_play_when_ready), exoPlayer.getPlayWhenReady());
 	}
 	
 	interface ChangeStepListener {
