@@ -24,6 +24,8 @@
 				android:layout_height="match_parent"
 				android:contentDescription="@string/description_step_image"
 				android:scaleType="centerCrop" />
+			
+			
 		
 		</FrameLayout>
 		
