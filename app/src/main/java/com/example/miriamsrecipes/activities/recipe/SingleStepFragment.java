@@ -20,12 +20,18 @@ import com.example.miriamsrecipes.datamodel.StepItem;
 import com.example.miriamsrecipes.util.GlideApp;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -47,6 +53,7 @@ public class SingleStepFragment extends Fragment {
 	private SimpleExoPlayer exoPlayer;
 	private PlayerView playerView;
 	private long playbackPosition;
+	private boolean playWhenReady;
 	
 	private MediaSessionCompat mediaSession;
 	private MediaSessionConnector mediaSessionConnector;
@@ -98,6 +105,7 @@ public class SingleStepFragment extends Fragment {
 			return;
 		}
 		playbackPosition = savedInstanceState.getLong(getString(R.string.key_player_position));
+		playWhenReady = savedInstanceState.getBoolean(getString(R.string.key_play_when_ready));
 	}
 	
 	
@@ -133,8 +141,10 @@ public class SingleStepFragment extends Fragment {
 		exoPlayer.prepare(getMediaSource());
 		
 		playerView.setPlayer(exoPlayer);
-		exoPlayer.setPlayWhenReady(true);
+		exoPlayer.setPlayWhenReady(playWhenReady);
 		exoPlayer.seekTo(0, playbackPosition);
+		
+		exoPlayer.addListener(new ExoPlayerListener());
 		
 		setUpMediaSession();
 	}
@@ -263,6 +273,7 @@ public class SingleStepFragment extends Fragment {
 	
 	private void savePlayerState() {
 		playbackPosition = exoPlayer.getCurrentPosition();
+		playWhenReady = exoPlayer.getPlayWhenReady();
 	}
 	
 	
@@ -270,8 +281,70 @@ public class SingleStepFragment extends Fragment {
 	public void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
+		outState.putBoolean(getString(R.string.key_play_when_ready), exoPlayer.getPlayWhenReady());
 	}
 	
+	
+	private final class ExoPlayerListener implements Player.EventListener {
+		
+		@Override
+		public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+		
+		}
+		
+		@Override
+		public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+		
+		}
+		
+		@Override
+		public void onLoadingChanged(boolean isLoading) {
+		
+		}
+		
+		@Override
+		public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+			if((playbackState == Player.STATE_READY) && playWhenReady){
+				// Video playing
+//				SingleStepFragment.this.playWhenReady = true;
+				SingleStepFragment.this.exoPlayer.setPlayWhenReady(true);
+			} else if((playbackState == Player.STATE_READY)){
+				// Video paused
+//				SingleStepFragment.this.playWhenReady = false;
+				SingleStepFragment.this.exoPlayer.setPlayWhenReady(false);
+			}
+		}
+		
+		@Override
+		public void onRepeatModeChanged(int repeatMode) {
+		
+		}
+		
+		@Override
+		public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+		
+		}
+		
+		@Override
+		public void onPlayerError(ExoPlaybackException error) {
+		
+		}
+		
+		@Override
+		public void onPositionDiscontinuity(int reason) {
+		
+		}
+		
+		@Override
+		public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+		
+		}
+		
+		@Override
+		public void onSeekProcessed() {
+		
+		}
+	}
 	
 	interface ChangeStepListener {
 		void onPrevious(int currentStepId);
