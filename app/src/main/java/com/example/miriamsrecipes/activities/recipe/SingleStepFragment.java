@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -43,7 +45,11 @@ public class SingleStepFragment extends Fragment {
 	private FragmentSingleStepBinding binding;
 	
 	private SimpleExoPlayer exoPlayer;
+	private PlayerView playerView;
 	private long playbackPosition;
+	
+	private MediaSessionCompat mediaSession;
+	private MediaSessionConnector mediaSessionConnector;
 	
 	private boolean haveVideo = false;
 	
@@ -120,19 +126,21 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void setUpVideoPlayer() {
-		PlayerView videoPlayer = binding.videoPlayer;
-		videoPlayer.setVisibility(View.VISIBLE);
+		playerView = binding.videoPlayer;
+		playerView.setVisibility(View.VISIBLE);
 		
-		exoPlayer = getExoPlayer();
+		exoPlayer = getExoPlayerInstance();
 		exoPlayer.prepare(getMediaSource());
 		
-		videoPlayer.setPlayer(exoPlayer);
+		playerView.setPlayer(exoPlayer);
 		exoPlayer.setPlayWhenReady(true);
 		exoPlayer.seekTo(0, playbackPosition);
+		
+		setUpMediaSession();
 	}
 	
 	@NonNull
-	private SimpleExoPlayer getExoPlayer() {
+	private SimpleExoPlayer getExoPlayerInstance() {
 		return ExoPlayerFactory.newSimpleInstance(
 				new DefaultRenderersFactory(getContext()),
 				new DefaultTrackSelector(),
@@ -153,6 +161,15 @@ public class SingleStepFragment extends Fragment {
 						getContext().getApplicationInfo().loadLabel(getContext().getPackageManager()).toString()
 				)
 		);
+	}
+	
+	private void setUpMediaSession() {
+		mediaSession = new MediaSessionCompat(
+				Objects.requireNonNull(getContext()),
+				getString(R.string.tag_media_session)
+		);
+		mediaSessionConnector = new MediaSessionConnector(mediaSession);
+		mediaSessionConnector.setPlayer(exoPlayer, null);
 	}
 	
 	
@@ -223,25 +240,38 @@ public class SingleStepFragment extends Fragment {
 	public void onStop() {
 		super.onStop();
 		if (exoPlayer != null) {
-			releasePlayer();
+			releaseExoPlayerResources();
 		}
 	}
 	
-	private void releasePlayer() {
+	private void releaseExoPlayerResources() {
 		savePlayerState();
+		releasePlayer();
+		releaseMediaSession();
+	}
+	
+	private void releasePlayer() {
+		playerView.setPlayer(null);
 		exoPlayer.release();
 		exoPlayer = null;
+	}
+	
+	private void releaseMediaSession() {
+		mediaSession.release();
+		mediaSessionConnector.setPlayer(null, null);
 	}
 	
 	private void savePlayerState() {
 		playbackPosition = exoPlayer.getCurrentPosition();
 	}
 	
+	
 	@Override
 	public void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
 	}
+	
 	
 	interface ChangeStepListener {
 		void onPrevious(int currentStepId);
