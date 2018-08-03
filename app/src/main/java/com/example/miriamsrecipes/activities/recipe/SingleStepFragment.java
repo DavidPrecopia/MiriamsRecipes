@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.FragmentSingleStepBinding;
 import com.example.miriamsrecipes.datamodel.StepItem;
+import com.example.miriamsrecipes.util.GlideApp;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -22,6 +24,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -39,9 +42,12 @@ public class SingleStepFragment extends Fragment {
 	private SharedFragmentsViewModel viewModel;
 	private FragmentSingleStepBinding binding;
 	
+	private PlayerView videoPlayer;
 	private SimpleExoPlayer exoPlayer;
 	private boolean playWhenReady;
 	private long playbackPosition;
+	
+	private boolean haveVideo = false;
 	
 	private ChangeStepListener changeStepListener;
 	
@@ -65,7 +71,6 @@ public class SingleStepFragment extends Fragment {
 		step = viewModel.getRecipe().getSteps().get(stepId);
 	}
 	
-	
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -74,6 +79,15 @@ public class SingleStepFragment extends Fragment {
 		restorePlayerState(savedInstanceState);
 		return binding.getRoot();
 	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (haveVideo && exoPlayer == null) {
+			setUpVideoPlayer();
+		}
+	}
+	
 	
 	private void restorePlayerState(Bundle savedInstanceState) {
 		if (savedInstanceState == null) {
@@ -93,17 +107,33 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void pickMedia() {
-		playWhenReady = true;
-		setUpVideoPlayer();
+		if (isValid(step.getVideoURL())) {
+			haveVideo = true;
+			setUpVideoPlayer();
+		} else if (isValid(step.getThumbnailURL())) {
+			bindPicture();
+		} else {
+			bindPicturePlaceholder();
+		}
+	}
+	
+	private boolean isValid(String url) {
+		return ! TextUtils.isEmpty(url);
 	}
 	
 	
 	private void setUpVideoPlayer() {
+		playWhenReady = true; // TODO Placeholder
+		
+		videoPlayer = binding.videoPlayer;
+		videoPlayer.setVisibility(View.VISIBLE);
+		
 		exoPlayer = getExoPlayer();
 		exoPlayer.prepare(getMediaSource());
 		
-		binding.videoPlayer.setVisibility(View.VISIBLE);
-		binding.videoPlayer.setPlayer(exoPlayer);
+		videoPlayer.setPlayer(exoPlayer);
+		exoPlayer.setPlayWhenReady(playWhenReady);
+		exoPlayer.seekTo(0, playbackPosition);
 	}
 	
 	@NonNull
@@ -128,6 +158,23 @@ public class SingleStepFragment extends Fragment {
 						getContext().getApplicationInfo().loadLabel(getContext().getPackageManager()).toString()
 				)
 		);
+	}
+	
+	
+	private void bindPicture() {
+		binding.ivPicture.setVisibility(View.VISIBLE);
+		GlideApp.with(Objects.requireNonNull(getContext()))
+				.load(step.getThumbnailURL())
+				.placeholder(R.drawable.black_placeholder)
+				.error(R.drawable.generic_cooking_picture)
+				.into(binding.ivPicture);
+	}
+	
+	private void bindPicturePlaceholder() {
+		binding.ivPicture.setVisibility(View.VISIBLE);
+		GlideApp.with(Objects.requireNonNull(getContext()))
+				.load(R.drawable.generic_cooking_picture)
+				.into(binding.ivPicture);
 	}
 	
 	
@@ -178,20 +225,11 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		if (exoPlayer == null) {
-			setUpVideoPlayer();
-		}
-		exoPlayer.setPlayWhenReady(playWhenReady);
-		exoPlayer.seekTo(0, playbackPosition);
-	}
-	
-	
-	@Override
 	public void onStop() {
 		super.onStop();
-		releasePlayer();
+		if (exoPlayer != null) {
+			releasePlayer();
+		}
 	}
 	
 	private void releasePlayer() {
