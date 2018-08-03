@@ -25,9 +25,4 @@
 		<item name="android:layout_marginTop">@dimen/margin_medium</item>
 		<item name="cardCornerRadius">@dimen/corner_radius</item>
 	</style>
-	
-	<style name="SingleStepStepCounter">
-		<item name="android:textAppearance">@style/TextSecondary</item>
-		<item name="android:textColor">@color/white</item>
-	</style>
 </resources>
