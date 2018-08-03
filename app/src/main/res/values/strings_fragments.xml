@@ -7,4 +7,6 @@
 	<string name="error_reached_first_step">This is the first step</string>
 	<string name="error_reached_last_step">You\'ve reached the last step</string>
 	<string name="label_step_count_separator">/</string>
+	<string name="key_player_position">player_position_key</string>
+	<string name="key_play_when_ready">play_when_ready_key</string>
 </resources>

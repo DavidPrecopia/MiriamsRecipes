@@ -36,14 +36,12 @@ public class SingleStepFragment extends Fragment {
 	private static final String STEP_ID_KEY = "step_key";
 	
 	private StepItem step;
-	
 	private SharedFragmentsViewModel viewModel;
 	private FragmentSingleStepBinding binding;
 	
-	private SimpleExoPlayer player;
-	// ExoPlayer state management
-	private boolean playWhenReady = true;
-	private long playbackPosition = 0;
+	private SimpleExoPlayer exoPlayer;
+	private boolean playWhenReady;
+	private long playbackPosition;
 	
 	private ChangeStepListener changeStepListener;
 	
@@ -73,8 +71,18 @@ public class SingleStepFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_single_step, container, false);
 		init();
+		restorePlayerState(savedInstanceState);
 		return binding.getRoot();
 	}
+	
+	private void restorePlayerState(Bundle savedInstanceState) {
+		if (savedInstanceState == null) {
+			return;
+		}
+		playbackPosition = savedInstanceState.getLong(getString(R.string.key_player_position));
+		playWhenReady = savedInstanceState.getBoolean(getString(R.string.key_play_when_ready));
+	}
+	
 	
 	private void init() {
 		pickMedia();
@@ -85,22 +93,21 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void pickMedia() {
+		playWhenReady = true;
 		setUpVideoPlayer();
 	}
 	
 	
 	private void setUpVideoPlayer() {
-		player = getPlayer();
-		player.setPlayWhenReady(playWhenReady);
-		player.seekTo(0, playbackPosition);
-		player.prepare(getMediaSource());
+		exoPlayer = getExoPlayer();
+		exoPlayer.prepare(getMediaSource());
 		
 		binding.videoPlayer.setVisibility(View.VISIBLE);
-		binding.videoPlayer.setPlayer(player);
+		binding.videoPlayer.setPlayer(exoPlayer);
 	}
 	
 	@NonNull
-	private SimpleExoPlayer getPlayer() {
+	private SimpleExoPlayer getExoPlayer() {
 		return ExoPlayerFactory.newSimpleInstance(
 				new DefaultRenderersFactory(getContext()),
 				new DefaultTrackSelector(),
@@ -121,18 +128,6 @@ public class SingleStepFragment extends Fragment {
 						getContext().getApplicationInfo().loadLabel(getContext().getPackageManager()).toString()
 				)
 		);
-	}
-	
-	
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		releasePlayer();
-	}
-	
-	private void releasePlayer() {
-		player.release();
-		player = null;
 	}
 	
 	
@@ -181,6 +176,41 @@ public class SingleStepFragment extends Fragment {
 		Toasty.info(Objects.requireNonNull(getContext()), message, Toast.LENGTH_SHORT).show();
 	}
 	
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (exoPlayer == null) {
+			setUpVideoPlayer();
+		}
+		exoPlayer.setPlayWhenReady(playWhenReady);
+		exoPlayer.seekTo(0, playbackPosition);
+	}
+	
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		releasePlayer();
+	}
+	
+	private void releasePlayer() {
+		savePlayerState();
+		exoPlayer.release();
+		exoPlayer = null;
+	}
+	
+	private void savePlayerState() {
+		playbackPosition = exoPlayer.getCurrentPosition();
+		playWhenReady = exoPlayer.getPlayWhenReady();
+	}
+	
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
+		outState.putBoolean(getString(R.string.key_play_when_ready), exoPlayer.getPlayWhenReady());
+	}
 	
 	interface ChangeStepListener {
 		void onPrevious(int currentStepId);
