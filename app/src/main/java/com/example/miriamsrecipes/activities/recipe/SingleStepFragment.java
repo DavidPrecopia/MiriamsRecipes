@@ -20,7 +20,9 @@ import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -38,15 +40,12 @@ public class SingleStepFragment extends Fragment {
 	private SharedFragmentsViewModel viewModel;
 	private FragmentSingleStepBinding binding;
 	
-	private ChangeStepListener changeStepListener;
-	
-	private SimpleExoPlayer simpleExoPlayer;
-	
+	private SimpleExoPlayer player;
 	// ExoPlayer state management
 	private boolean playWhenReady = true;
-	
-	private int currentWindow = 0;
 	private long playbackPosition = 0;
+	
+	private ChangeStepListener changeStepListener;
 	
 	
 	public SingleStepFragment() {
@@ -78,49 +77,69 @@ public class SingleStepFragment extends Fragment {
 	}
 	
 	private void init() {
-		binding.videoPlayer.setVisibility(View.VISIBLE);
-		
-		videoPlayer();
+		pickMedia();
 		bindDescription();
 		setStepChangeListeners();
 		bindStepIndicator();
 	}
 	
-	private void videoPlayer() {
-		/**
-		 * Roughly a RenderersFactory creates renderers for timestamp synchronized rendering of video, audio and text (subtitles).
-		 * The TrackSelector is responsible for selecting from the available audio, video and text tracks.
-		 * The LoadControl manages buffering of the player.
-		 */
-		simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
+	
+	private void pickMedia() {
+		setUpVideoPlayer();
+	}
+	
+	
+	private void setUpVideoPlayer() {
+		player = getPlayer();
+		player.setPlayWhenReady(playWhenReady);
+		player.seekTo(0, playbackPosition);
+		player.prepare(getMediaSource());
+		
+		binding.videoPlayer.setVisibility(View.VISIBLE);
+		binding.videoPlayer.setPlayer(player);
+	}
+	
+	@NonNull
+	private SimpleExoPlayer getPlayer() {
+		return ExoPlayerFactory.newSimpleInstance(
 				new DefaultRenderersFactory(getContext()),
 				new DefaultTrackSelector(),
 				new DefaultLoadControl()
 		);
-		
-		binding.videoPlayer.setPlayer(simpleExoPlayer);
-		
-		simpleExoPlayer.setPlayWhenReady(playWhenReady);
-		simpleExoPlayer.seekTo(currentWindow, playbackPosition);
-		
-		DefaultDataSourceFactory defaultDataSourceFactory = new DefaultDataSourceFactory(Objects.requireNonNull(getContext()), Util.getUserAgent(getContext(), getContext().getApplicationInfo().loadLabel(getContext().getPackageManager()).toString()));
-		
-		ExtractorMediaSource mediaSource = new ExtractorMediaSource.Factory(defaultDataSourceFactory).createMediaSource(Uri.parse(step.getVideoURL()));
-		
-		simpleExoPlayer.prepare(mediaSource);
 	}
+	
+	private MediaSource getMediaSource() {
+		return new ExtractorMediaSource.Factory(getDataSourceFactory())
+				.createMediaSource(Uri.parse(step.getVideoURL()));
+	}
+	
+	private DataSource.Factory getDataSourceFactory() {
+		return new DefaultDataSourceFactory(
+				Objects.requireNonNull(getContext()),
+				Util.getUserAgent(
+						getContext(),
+						getContext().getApplicationInfo().loadLabel(getContext().getPackageManager()).toString()
+				)
+		);
+	}
+	
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		binding.videoPlayer.setPlayer(null);
-		simpleExoPlayer.release();
-		simpleExoPlayer = null;
+		releasePlayer();
 	}
+	
+	private void releasePlayer() {
+		player.release();
+		player = null;
+	}
+	
 	
 	private void bindDescription() {
 		binding.tvDescription.setText(step.getDescription());
 	}
+	
 	
 	private void setStepChangeListeners() {
 		try {
