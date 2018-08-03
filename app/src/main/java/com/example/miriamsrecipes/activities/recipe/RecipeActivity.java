@@ -77,10 +77,10 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private void changeCurrentStep(Fragment fragment) {
 		fragmentManager.popBackStack(BACKSTACK_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//		fragmentManager.beginTransaction()
-//				.replace(R.id.fragment_holder, fragment)
-//				.addToBackStack(BACKSTACK_TAG)
-//				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//				.commit();
+		fragmentManager.beginTransaction()
+				.replace(R.id.fragment_holder, fragment)
+				.addToBackStack(BACKSTACK_TAG)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+				.commit();
 	}
 }
