@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.miriamsrecipes.R;
+import com.example.miriamsrecipes.databinding.ActivityRecipeBinding;
 
 public class RecipeActivity extends AppCompatActivity
 		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
@@ -15,25 +16,37 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private FragmentManager fragmentManager;
 	
+	private boolean dualPane;
+	
 	private static final String BACKSTACK_TAG = "backstack_tag";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		DataBindingUtil.setContentView(this, R.layout.activity_recipe);
+		ActivityRecipeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe);
+		
+		dualPane = (binding.masterDetailLayout != null);
 		
 		fragmentManager = getSupportFragmentManager();
-		if (savedInstanceState == null) {
-			initializeFragment();
+		if (!dualPane && savedInstanceState == null) {
+			initializeFragment(binding.fragmentHolder.getId());
+		}
+		
+		// testing
+		if (dualPane) {
+			initializeFragment(binding.masterHolder.getId());
+			
+			SingleStepFragment fragment = SingleStepFragment.newInstance(1);
+			fragmentManager.beginTransaction().add(binding.detailHolder.getId(), fragment).commit();
 		}
 	}
 	
-	private void initializeFragment() {
+	private void initializeFragment(int layoutId) {
 		StepsFragment fragment = StepsFragment.newInstance(
 				getIntent().getParcelableExtra(RecipeActivity.class.getSimpleName())
 		);
 		fragmentManager.beginTransaction()
-				.add(R.id.fragment_holder, fragment)
+				.add(layoutId, fragment)
 				.commit();
 	}
 	
@@ -64,14 +77,14 @@ public class RecipeActivity extends AppCompatActivity
 	@Override
 	public void onPrevious(int currentStepId) {
 		changeCurrentStep(
-				SingleStepFragment.newInstance(currentStepId - 1)
+				SingleStepFragment.newInstance((currentStepId - 1))
 		);
 	}
 	
 	@Override
 	public void onNext(int currentStepId) {
 		changeCurrentStep(
-				SingleStepFragment.newInstance(currentStepId + 1)
+				SingleStepFragment.newInstance((currentStepId + 1))
 		);
 	}
 	

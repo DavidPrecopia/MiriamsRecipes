@@ -21,7 +21,6 @@ import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.datamodel.StepItem;
 
 import java.util.List;
-import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -54,7 +53,7 @@ public class StepsFragment extends Fragment {
 	}
 	
 	private void setUpViewModel() {
-		ViewModelFactory factory = new ViewModelFactory(Objects.requireNonNull(getArguments()).getParcelable(RECIPE_KEY));
+		ViewModelFactory factory = new ViewModelFactory(getArguments().getParcelable(RECIPE_KEY));
 		viewModel = ViewModelProviders.of(getActivity(), factory).get(SharedFragmentsViewModel.class);
 	}
 	

@@ -119,10 +119,6 @@ public class SingleStepFragment extends Fragment {
 		}
 	}
 	
-	private boolean orientationPortrait() {
-		return getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-	}
-	
 	
 	private void pickMedia() {
 		if (isValid(step.getVideoURL())) {
@@ -288,6 +284,11 @@ public class SingleStepFragment extends Fragment {
 			outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
 			outState.putBoolean(getString(R.string.key_play_when_ready), exoPlayer.getPlayWhenReady());
 		}
+	}
+	
+	
+	private boolean orientationPortrait() {
+		return getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 	
 	
