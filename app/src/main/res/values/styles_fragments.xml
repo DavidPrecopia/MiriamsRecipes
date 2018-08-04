@@ -5,13 +5,4 @@
 		<item name="android:textAppearance">@style/TextSecondary</item>
 		<item name="android:textColor">@color/white</item>
 	</style>
-	
-	<!--Hiding unnecessary player controls from ExoPlayer-->
-	<style name="ExoMediaButton.Next">
-		<item name="android:visibility">gone</item>
-	</style>
-	
-	<style name="ExoMediaButton.Previous">
-		<item name="android:visibility">gone</item>
-	</style>
 </resources>
