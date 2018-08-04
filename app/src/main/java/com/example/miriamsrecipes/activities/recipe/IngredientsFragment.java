@@ -20,7 +20,6 @@ import com.example.miriamsrecipes.databinding.ListItemIngredientBinding;
 import com.example.miriamsrecipes.datamodel.IngredientsItem;
 
 import java.util.List;
-import java.util.Objects;
 
 public class IngredientsFragment extends Fragment {
 	
@@ -39,13 +38,12 @@ public class IngredientsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(SharedFragmentsViewModel.class);
+		viewModel = ViewModelProviders.of(getActivity()).get(SharedFragmentsViewModel.class);
 	}
 	
 	
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredients, container, false);
 		init();
 		return binding.getRoot();
@@ -57,9 +55,8 @@ public class IngredientsFragment extends Fragment {
 	}
 	
 	private void setUpToolbar() {
-		((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(binding.appBar.toolbar);
+		((AppCompatActivity) getActivity()).setSupportActionBar(binding.appBar.toolbar);
 		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-		assert actionBar != null;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		binding.appBar.toolbar.setTitle(R.string.title_ingredients_fragment);
 	}

@@ -55,13 +55,12 @@ public class StepsFragment extends Fragment {
 	
 	private void setUpViewModel() {
 		ViewModelFactory factory = new ViewModelFactory(Objects.requireNonNull(getArguments()).getParcelable(RECIPE_KEY));
-		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity()), factory).get(SharedFragmentsViewModel.class);
+		viewModel = ViewModelProviders.of(getActivity(), factory).get(SharedFragmentsViewModel.class);
 	}
 	
 	
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_steps, container, false);
 		init();
 		return binding.getRoot();
@@ -75,9 +74,8 @@ public class StepsFragment extends Fragment {
 	}
 	
 	private void setUpToolbar() {
-		((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(binding.appBar.toolbar);
+		((AppCompatActivity) getActivity()).setSupportActionBar(binding.appBar.toolbar);
 		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-		assert actionBar != null;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(viewModel.getRecipe().getName());
 	}

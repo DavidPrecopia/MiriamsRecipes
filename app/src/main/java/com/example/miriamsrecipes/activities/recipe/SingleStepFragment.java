@@ -1,6 +1,7 @@
 package com.example.miriamsrecipes.activities.recipe;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,8 +37,6 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
@@ -77,14 +76,13 @@ public class SingleStepFragment extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		int stepId = Objects.requireNonNull(getArguments()).getInt(STEP_ID_KEY);
-		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(SharedFragmentsViewModel.class);
+		int stepId = getArguments().getInt(STEP_ID_KEY);
+		viewModel = ViewModelProviders.of(getActivity()).get(SharedFragmentsViewModel.class);
 		step = viewModel.getRecipe().getSteps().get(stepId);
 	}
 	
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_single_step, container, false);
 		init();
 		restorePlayerState(savedInstanceState);
@@ -94,8 +92,11 @@ public class SingleStepFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		// Initializing ExoPlayer here per their tutorial.
 		if (haveVideo && exoPlayer == null) {
 			setUpVideoPlayer();
+			exoPlayer.setPlayWhenReady(playWhenReady);
+			exoPlayer.seekTo(0, playbackPosition);
 		}
 	}
 	
@@ -111,16 +112,21 @@ public class SingleStepFragment extends Fragment {
 	
 	private void init() {
 		pickMedia();
-		bindDescription();
-		setStepChangeListeners();
-		bindStepIndicator();
+		if (orientationPortrait()) {
+			bindDescription();
+			setStepChangeListeners();
+			bindStepIndicator();
+		}
+	}
+	
+	private boolean orientationPortrait() {
+		return getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 	
 	
 	private void pickMedia() {
 		if (isValid(step.getVideoURL())) {
 			haveVideo = true;
-			setUpVideoPlayer();
 		} else if (isValid(step.getThumbnailURL())) {
 			bindPicture();
 		} else {
@@ -134,17 +140,13 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void setUpVideoPlayer() {
-		playerView = binding.videoPlayer;
+		playerView = binding.mediaPlayer.videoPlayer;
 		playerView.setVisibility(View.VISIBLE);
 		
 		exoPlayer = getExoPlayerInstance();
 		exoPlayer.prepare(getMediaSource());
-		
-		playerView.setPlayer(exoPlayer);
-		exoPlayer.setPlayWhenReady(playWhenReady);
-		exoPlayer.seekTo(0, playbackPosition);
-		
 		exoPlayer.addListener(new ExoPlayerListener());
+		playerView.setPlayer(exoPlayer);
 		
 		setUpMediaSession();
 	}
@@ -165,7 +167,7 @@ public class SingleStepFragment extends Fragment {
 	
 	private DataSource.Factory getDataSourceFactory() {
 		return new DefaultDataSourceFactory(
-				Objects.requireNonNull(getContext()),
+				getContext(),
 				Util.getUserAgent(
 						getContext(),
 						getContext().getApplicationInfo().loadLabel(getContext().getPackageManager()).toString()
@@ -175,7 +177,7 @@ public class SingleStepFragment extends Fragment {
 	
 	private void setUpMediaSession() {
 		mediaSession = new MediaSessionCompat(
-				Objects.requireNonNull(getContext()),
+				getContext(),
 				getString(R.string.tag_media_session)
 		);
 		mediaSessionConnector = new MediaSessionConnector(mediaSession);
@@ -184,19 +186,19 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void bindPicture() {
-		binding.ivPicture.setVisibility(View.VISIBLE);
-		GlideApp.with(Objects.requireNonNull(getContext()))
+		binding.mediaPicture.ivPicture.setVisibility(View.VISIBLE);
+		GlideApp.with(getContext())
 				.load(step.getThumbnailURL())
 				.placeholder(R.drawable.black_placeholder)
 				.error(R.drawable.generic_cooking_picture)
-				.into(binding.ivPicture);
+				.into(binding.mediaPicture.ivPicture);
 	}
 	
 	private void bindPicturePlaceholder() {
-		binding.ivPicture.setVisibility(View.VISIBLE);
-		GlideApp.with(Objects.requireNonNull(getContext()))
+		binding.mediaPicture.ivPicture.setVisibility(View.VISIBLE);
+		GlideApp.with(getContext())
 				.load(R.drawable.generic_cooking_picture)
-				.into(binding.ivPicture);
+				.into(binding.mediaPicture.ivPicture);
 	}
 	
 	
@@ -242,7 +244,7 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void infoToast(String message) {
-		Toasty.info(Objects.requireNonNull(getContext()), message, Toast.LENGTH_SHORT).show();
+		Toasty.info(getContext(), message, Toast.LENGTH_SHORT).show();
 	}
 	
 	
@@ -272,6 +274,7 @@ public class SingleStepFragment extends Fragment {
 	}
 	
 	private void savePlayerState() {
+		Timber.d(exoPlayer.getCurrentPosition() + "\n" + exoPlayer.getPlayWhenReady());
 		playbackPosition = exoPlayer.getCurrentPosition();
 		playWhenReady = exoPlayer.getPlayWhenReady();
 	}
@@ -279,9 +282,12 @@ public class SingleStepFragment extends Fragment {
 	
 	@Override
 	public void onSaveInstanceState(@NonNull Bundle outState) {
+		Timber.d("onSaveInstanceState");
 		super.onSaveInstanceState(outState);
-		outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
-		outState.putBoolean(getString(R.string.key_play_when_ready), exoPlayer.getPlayWhenReady());
+		if (exoPlayer != null) {
+			outState.putLong(getString(R.string.key_player_position), exoPlayer.getCurrentPosition());
+			outState.putBoolean(getString(R.string.key_play_when_ready), exoPlayer.getPlayWhenReady());
+		}
 	}
 	
 	
@@ -304,10 +310,10 @@ public class SingleStepFragment extends Fragment {
 		
 		@Override
 		public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-			if((playbackState == Player.STATE_READY) && playWhenReady){
+			if ((playbackState == Player.STATE_READY) && playWhenReady) {
 				// Video playing
 				SingleStepFragment.this.exoPlayer.setPlayWhenReady(true);
-			} else if((playbackState == Player.STATE_READY)){
+			} else if ((playbackState == Player.STATE_READY)) {
 				// Video paused
 				SingleStepFragment.this.exoPlayer.setPlayWhenReady(false);
 			}
