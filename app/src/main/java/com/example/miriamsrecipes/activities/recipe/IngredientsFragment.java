@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +57,10 @@ public class IngredientsFragment extends Fragment {
 	}
 	
 	private void setUpToolbar() {
+		((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(binding.appBar.toolbar);
+		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+		assert actionBar != null;
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		binding.appBar.toolbar.setTitle(R.string.title_ingredients_fragment);
 	}
 	

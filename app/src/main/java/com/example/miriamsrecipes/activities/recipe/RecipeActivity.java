@@ -83,4 +83,18 @@ public class RecipeActivity extends AppCompatActivity
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.commit();
 	}
+	
+	
+	/**
+	 * @return true if Up navigation completed successfully <b>and</b> this Activity was finished, false otherwise.
+	 */
+	@Override
+	public boolean onSupportNavigateUp() {
+		if (fragmentManager.getBackStackEntryCount() > 0) {
+			fragmentManager.popBackStack();
+			return false;
+		} else {
+			return super.onSupportNavigateUp();
+		}
+	}
 }
