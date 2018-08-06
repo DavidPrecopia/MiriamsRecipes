@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--RecipeActivity-->
+	<string name="fragments_backstack_tag">backstack_tag</string>
+	<string name="error_unknown_layout_state">Current layout is unknown</string>
+</resources>
