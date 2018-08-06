@@ -10,41 +10,66 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.ActivityRecipeBinding;
 
+import timber.log.Timber;
+
 public class RecipeActivity extends AppCompatActivity
 		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
 		SingleStepFragment.ChangeStepListener {
+	
+	private ActivityRecipeBinding binding;
 	
 	private FragmentManager fragmentManager;
 	
 	private boolean dualPane;
 	
-	private static final String BACKSTACK_TAG = "backstack_tag";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ActivityRecipeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe);
-		
+		binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe);
+		init(savedInstanceState == null);
+	}
+	
+	private void init(boolean newActivity) {
+		initializeFields();
+		setUpLayout(newActivity);
+	}
+	
+	private void initializeFields() {
 		dualPane = (binding.masterDetailLayout != null);
-		
 		fragmentManager = getSupportFragmentManager();
-		if (!dualPane && savedInstanceState == null) {
-			initializeFragment(binding.fragmentHolder.getId());
-		}
-		
-		// testing
-		if (dualPane) {
-			initializeFragment(binding.masterHolder.getId());
-			
-			SingleStepFragment fragment = SingleStepFragment.newInstance(1);
-			fragmentManager.beginTransaction().add(binding.detailHolder.getId(), fragment).commit();
+	}
+	
+	
+	private void setUpLayout(boolean newActivity) {
+		if (! dualPane && newActivity) {
+			initializeFragment(getStepsFragment(), binding.fragmentHolder.getId());
+		} else if (dualPane) {
+			initializeDualPaneFragments();
+		} else {
+			Timber.e(getString(R.string.error_unknown_layout_state));
 		}
 	}
 	
-	private void initializeFragment(int layoutId) {
-		StepsFragment fragment = StepsFragment.newInstance(
+	private void initializeDualPaneFragments() {
+		initializeFragment(
+				getStepsFragment(),
+				binding.masterHolder.getId()
+		);
+		initializeFragment(
+				IngredientsFragment.newInstance(),
+				binding.detailHolder.getId()
+		);
+	}
+	
+	private StepsFragment getStepsFragment() {
+		return StepsFragment.newInstance(
 				getIntent().getParcelableExtra(RecipeActivity.class.getSimpleName())
 		);
+	}
+	
+	
+	private void initializeFragment(Fragment fragment, int layoutId) {
 		fragmentManager.beginTransaction()
 				.add(layoutId, fragment)
 				.commit();
@@ -68,7 +93,7 @@ public class RecipeActivity extends AppCompatActivity
 	private void replaceFragment(Fragment fragment) {
 		fragmentManager.beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
-				.addToBackStack(BACKSTACK_TAG)
+				.addToBackStack(getString(R.string.fragments_backstack_tag))
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 				.commit();
 	}
@@ -89,10 +114,10 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void changeCurrentStep(Fragment fragment) {
-		fragmentManager.popBackStack(BACKSTACK_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		fragmentManager.popBackStack(getString(R.string.fragments_backstack_tag), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		fragmentManager.beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
-				.addToBackStack(BACKSTACK_TAG)
+				.addToBackStack(getString(R.string.fragments_backstack_tag))
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.commit();
 	}
