@@ -10,53 +10,35 @@
 		tools:context=".activities.recipe.SingleStepFragment">
 		
 		<FrameLayout
-			android:id="@+id/media_holder"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:contentDescription="@string/description_step_image"
-			app:layout_constraintBottom_toTopOf="@+id/guideline_center"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent">
+			style="@style/FrameLayoutMediaHolder"
+			app:layout_constraintBottom_toTopOf="@+id/guideline_center">
 			
-			<include
-				android:id="@+id/media_player"
-				layout="@layout/single_step_media_player" />
+			<com.google.android.exoplayer2.ui.PlayerView
+				android:id="@+id/video_player"
+				style="@style/SingleStepMediaExoPlayer" />
 			
-			<include
-				android:id="@+id/media_picture"
-				layout="@layout/single_step_media_picture" />
-		
+			<!--Content description in style-->
+			<ImageView
+				android:id="@+id/iv_picture"
+				style="@style/SingleStepMediaPicture"
+				tools:ignore="ContentDescription" />
 		</FrameLayout>
 		
 		<android.support.constraint.Guideline
 			android:id="@+id/guideline_center"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			app:layout_constraintBottom_toBottomOf="@+id/step_navigation_layout"
-			app:layout_constraintGuide_percent="0.4"
-			app:layout_constraintTop_toTopOf="parent" />
+			style="@style/Guideline" />
 		
 		<android.support.v4.widget.NestedScrollView
 			android:id="@+id/nested_scroll_view"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_marginEnd="@dimen/margin_normal"
-			android:layout_marginStart="@dimen/margin_normal"
-			android:layout_marginTop="@dimen/margin_normal"
+			style="@style/NestedScrollDescription"
 			app:layout_constraintBottom_toTopOf="@+id/step_navigation_layout"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="@+id/guideline_center">
 			
 			<TextView
 				android:id="@+id/tv_description"
+				style="@style/StepDescription"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:minLines="1"
-				android:textAppearance="@style/TextPrimary"
-				tools:text="This is a step of a recipe - description of a step" />
+				android:layout_height="match_parent" />
 		
 		</android.support.v4.widget.NestedScrollView>
 		
@@ -144,6 +126,6 @@
 				app:srcCompat="@drawable/ic_arrow_forward_24dp" />
 		
 		</android.support.constraint.ConstraintLayout>
-	
 	</android.support.constraint.ConstraintLayout>
+
 </layout>

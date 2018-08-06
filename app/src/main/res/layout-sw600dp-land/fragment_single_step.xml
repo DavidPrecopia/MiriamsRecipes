@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+	
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".activities.recipe.SingleStepFragment">
+		
+		<FrameLayout
+			style="@style/FrameLayoutMediaHolder"
+			app:layout_constraintBottom_toTopOf="@+id/guideline_center">
+			
+			<com.google.android.exoplayer2.ui.PlayerView
+				android:id="@+id/video_player"
+				style="@style/SingleStepMediaExoPlayer" />
+			
+			<!--Content description in style-->
+			<ImageView
+				android:id="@+id/iv_picture"
+				style="@style/SingleStepMediaPicture"
+				tools:ignore="ContentDescription" />
+		</FrameLayout>
+		
+		<android.support.constraint.Guideline
+			android:id="@+id/guideline_center"
+			style="@style/Guideline" />
+		
+		<android.support.v4.widget.NestedScrollView
+			android:id="@+id/nested_scroll_view"
+			style="@style/NestedScrollDescription"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/guideline_center">
+			
+			<TextView
+				android:id="@+id/tv_description"
+				style="@style/StepDescription"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+		
+		</android.support.v4.widget.NestedScrollView>
+	</android.support.constraint.ConstraintLayout>
+
+</layout>

@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<FrameLayout
-		android:id="@+id/media_holder"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		
-		<include
-			android:id="@+id/media_player"
-			layout="@layout/single_step_media_player" />
+		<com.google.android.exoplayer2.ui.PlayerView
+			android:id="@+id/video_player"
+			style="@style/SingleStepMediaExoPlayer" />
 		
-		<include
-			android:id="@+id/media_picture"
-			layout="@layout/single_step_media_picture" />
-	
+		<!--Content description in style-->
+		<ImageView
+			android:id="@+id/iv_picture"
+			style="@style/SingleStepMediaPicture"
+			tools:ignore="ContentDescription" />
+		
 	</FrameLayout>
+
 </layout>

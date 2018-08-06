@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.miriamsrecipes.R;
@@ -43,14 +44,20 @@ import timber.log.Timber;
 
 public class SingleStepFragment extends Fragment {
 	
+	
+	// TODO IF DUAL-PANE
+	
+	
 	private static final String STEP_ID_KEY = "step_key";
 	
 	private StepItem step;
 	private SharedFragmentsViewModel viewModel;
 	private FragmentSingleStepBinding binding;
 	
-	private SimpleExoPlayer exoPlayer;
 	private PlayerView playerView;
+	private ImageView mediaPicture;
+	
+	private SimpleExoPlayer exoPlayer;
 	private long playbackPosition;
 	private boolean playWhenReady;
 	
@@ -111,12 +118,18 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void init() {
+		getMediaReferences();
 		pickMedia();
 		if (orientationPortrait()) {
 			bindDescription();
-			setStepChangeListeners();
-			bindStepIndicator();
+			setUpStepNavigation();
 		}
+	}
+	
+	
+	private void getMediaReferences() {
+		playerView = binding.videoPlayer;
+		mediaPicture = binding.ivPicture;
 	}
 	
 	
@@ -136,7 +149,6 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void setUpVideoPlayer() {
-		playerView = binding.mediaPlayer.videoPlayer;
 		playerView.setVisibility(View.VISIBLE);
 		
 		exoPlayer = getExoPlayerInstance();
@@ -182,19 +194,19 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void bindPicture() {
-		binding.mediaPicture.ivPicture.setVisibility(View.VISIBLE);
+		mediaPicture.setVisibility(View.VISIBLE);
 		GlideApp.with(getContext())
 				.load(step.getThumbnailURL())
 				.placeholder(R.drawable.black_placeholder)
 				.error(R.drawable.generic_cooking_picture)
-				.into(binding.mediaPicture.ivPicture);
+				.into(mediaPicture);
 	}
 	
 	private void bindPicturePlaceholder() {
-		binding.mediaPicture.ivPicture.setVisibility(View.VISIBLE);
+		mediaPicture.setVisibility(View.VISIBLE);
 		GlideApp.with(getContext())
 				.load(R.drawable.generic_cooking_picture)
-				.into(binding.mediaPicture.ivPicture);
+				.into(mediaPicture);
 	}
 	
 	
@@ -202,6 +214,11 @@ public class SingleStepFragment extends Fragment {
 		binding.tvDescription.setText(step.getDescription());
 	}
 	
+	
+	private void setUpStepNavigation() {
+		setStepChangeListeners();
+		bindStepIndicator();
+	}
 	
 	private void setStepChangeListeners() {
 		try {
