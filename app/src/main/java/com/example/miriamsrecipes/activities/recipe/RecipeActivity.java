@@ -79,7 +79,7 @@ public class RecipeActivity extends AppCompatActivity
 	@Override
 	public void onStepClick(int stepId) {
 		replaceFragment(
-				SingleStepFragment.newInstance(stepId)
+				SingleStepFragment.newInstance(stepId, dualPane)
 		);
 	}
 	
@@ -102,14 +102,14 @@ public class RecipeActivity extends AppCompatActivity
 	@Override
 	public void onPrevious(int currentStepId) {
 		changeCurrentStep(
-				SingleStepFragment.newInstance((currentStepId - 1))
+				SingleStepFragment.newInstance((currentStepId - 1), dualPane)
 		);
 	}
 	
 	@Override
 	public void onNext(int currentStepId) {
 		changeCurrentStep(
-				SingleStepFragment.newInstance((currentStepId + 1))
+				SingleStepFragment.newInstance((currentStepId + 1), dualPane)
 		);
 	}
 	
