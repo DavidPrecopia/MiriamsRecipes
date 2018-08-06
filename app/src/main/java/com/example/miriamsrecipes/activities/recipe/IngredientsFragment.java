@@ -23,21 +23,30 @@ import java.util.List;
 
 public class IngredientsFragment extends Fragment {
 	
+	private static final String DUAL_PANE_KEY = "dual_pane_key";
+	
 	private SharedFragmentsViewModel viewModel;
 	private FragmentIngredientsBinding binding;
+	
+	private boolean dualPane;
 	
 	
 	public IngredientsFragment() {
 	}
 	
-	public static IngredientsFragment newInstance() {
-		return new IngredientsFragment();
+	public static IngredientsFragment newInstance(boolean dualPane) {
+		IngredientsFragment fragment = new IngredientsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(DUAL_PANE_KEY, dualPane);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		dualPane = getArguments().getBoolean(DUAL_PANE_KEY);
 		viewModel = ViewModelProviders.of(getActivity()).get(SharedFragmentsViewModel.class);
 	}
 	
@@ -57,7 +66,9 @@ public class IngredientsFragment extends Fragment {
 	private void setUpToolbar() {
 		((AppCompatActivity) getActivity()).setSupportActionBar(binding.appBar.toolbar);
 		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		if (! dualPane) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		binding.appBar.toolbar.setTitle(R.string.title_ingredients_fragment);
 	}
 	

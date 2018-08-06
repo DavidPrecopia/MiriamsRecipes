@@ -44,10 +44,6 @@ import timber.log.Timber;
 
 public class SingleStepFragment extends Fragment {
 	
-	
-	// TODO IF DUAL-PANE
-	
-	
 	private static final String STEP_ID_KEY = "step_key";
 	
 	private StepItem step;

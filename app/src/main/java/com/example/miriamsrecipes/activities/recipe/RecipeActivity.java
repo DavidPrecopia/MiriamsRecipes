@@ -57,7 +57,7 @@ public class RecipeActivity extends AppCompatActivity
 				binding.masterHolder.getId()
 		);
 		initializeFragment(
-				IngredientsFragment.newInstance(),
+				IngredientsFragment.newInstance(dualPane),
 				binding.detailHolder.getId()
 		);
 	}
@@ -86,7 +86,7 @@ public class RecipeActivity extends AppCompatActivity
 	@Override
 	public void onIngredientClick() {
 		replaceFragment(
-				IngredientsFragment.newInstance()
+				IngredientsFragment.newInstance(dualPane)
 		);
 	}
 	
