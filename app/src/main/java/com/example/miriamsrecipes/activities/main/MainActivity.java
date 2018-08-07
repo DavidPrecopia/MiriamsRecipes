@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 	private void setUpRecyclerView() {
 		RecyclerView recyclerView = binding.recyclerView;
 		
-		recyclerView.setLayoutManager(getLayoutManager(recyclerView));
+		recyclerView.setLayoutManager(getLayoutManager());
 		recyclerView.setHasFixedSize(true);
 		
 		recyclerViewAdapter = new RecipeAdapter();
@@ -74,13 +73,11 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setAdapter(recyclerViewAdapter);
 	}
 	
-	private RecyclerView.LayoutManager getLayoutManager(RecyclerView recyclerView) {
+	private RecyclerView.LayoutManager getLayoutManager() {
 		if (getResources().getBoolean(R.bool.master_detail_layout)) {
 			return new GridLayoutManager(this, 3);
 		} else {
-			LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-			recyclerView.addItemDecoration(getDividerItemDecoration(recyclerView, linearLayoutManager));
-			return linearLayoutManager;
+			return new LinearLayoutManager(this);
 		}
 	}
 	
@@ -94,13 +91,6 @@ public class MainActivity extends AppCompatActivity {
 			return;
 		}
 		recyclerViewAdapter.replaceData(recipeList);
-	}
-	
-	private RecyclerView.ItemDecoration getDividerItemDecoration(RecyclerView recyclerView, LinearLayoutManager layoutManager) {
-		return new DividerItemDecoration(
-				recyclerView.getContext(),
-				layoutManager.getOrientation()
-		);
 	}
 	
 	

@@ -11,14 +11,13 @@
 			type="com.example.miriamsrecipes.datamodel.StepItem" />
 	</data>
 	
-	<android.support.v7.widget.CardView
-		style="@style/ListItemCardView" >
+	<android.support.v7.widget.CardView style="@style/ListItemCardView">
 		
 		<android.support.constraint.ConstraintLayout
-			android:background="@drawable/list_item_selector"
 			android:id="@+id/root_layout"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			android:background="@drawable/list_item_selector">
 			
 			<!--1 is added to the step's id because they have zero-based index-->
 			<TextView
