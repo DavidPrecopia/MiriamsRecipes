@@ -23,12 +23,12 @@ import java.util.List;
 
 public class IngredientsFragment extends Fragment {
 	
-	private static final String DUAL_PANE_KEY = "dual_pane_key";
+	private static final String MASTER_DETAIL_LAYOUT_KEY = "master_detail_layout_key";
 	
 	private SharedFragmentsViewModel viewModel;
 	private FragmentIngredientsBinding binding;
 	
-	private boolean dualPane;
+	private boolean masterDetailLayout;
 	
 	
 	public IngredientsFragment() {
@@ -37,7 +37,7 @@ public class IngredientsFragment extends Fragment {
 	public static IngredientsFragment newInstance(boolean dualPane) {
 		IngredientsFragment fragment = new IngredientsFragment();
 		Bundle bundle = new Bundle();
-		bundle.putBoolean(DUAL_PANE_KEY, dualPane);
+		bundle.putBoolean(MASTER_DETAIL_LAYOUT_KEY, dualPane);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -46,7 +46,7 @@ public class IngredientsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dualPane = getArguments().getBoolean(DUAL_PANE_KEY);
+		masterDetailLayout = getArguments().getBoolean(MASTER_DETAIL_LAYOUT_KEY);
 		viewModel = ViewModelProviders.of(getActivity()).get(SharedFragmentsViewModel.class);
 	}
 	
@@ -66,7 +66,7 @@ public class IngredientsFragment extends Fragment {
 	private void setUpToolbar() {
 		((AppCompatActivity) getActivity()).setSupportActionBar(binding.appBar.toolbar);
 		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-		if (! dualPane) {
+		if (! masterDetailLayout) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 		binding.appBar.toolbar.setTitle(R.string.title_ingredients_fragment);

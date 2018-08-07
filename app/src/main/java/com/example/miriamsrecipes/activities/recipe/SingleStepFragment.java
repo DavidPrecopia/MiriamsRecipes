@@ -45,7 +45,7 @@ import timber.log.Timber;
 public class SingleStepFragment extends Fragment {
 	
 	private static final String STEP_ID_KEY = "step_key";
-	private static final String DUAL_PANE_KEY = "dual_pane_key";
+	private static final String MASTER_DETAIL_LAYOUT_KEY = "master_detail_layout_key";
 	
 	private StepItem step;
 	private SharedFragmentsViewModel viewModel;
@@ -61,7 +61,7 @@ public class SingleStepFragment extends Fragment {
 	private MediaSessionCompat mediaSession;
 	private MediaSessionConnector mediaSessionConnector;
 	
-	private boolean dualPane;
+	private boolean masterDetailLayout;
 	private boolean haveVideo = false;
 	
 	private ChangeStepListener changeStepListener;
@@ -74,7 +74,7 @@ public class SingleStepFragment extends Fragment {
 		SingleStepFragment fragment = new SingleStepFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(STEP_ID_KEY, stepId);
-		bundle.putBoolean(DUAL_PANE_KEY, dualPane);
+		bundle.putBoolean(MASTER_DETAIL_LAYOUT_KEY, dualPane);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -82,7 +82,7 @@ public class SingleStepFragment extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dualPane = getArguments().getBoolean(DUAL_PANE_KEY);
+		masterDetailLayout = getArguments().getBoolean(MASTER_DETAIL_LAYOUT_KEY);
 		getStep();
 	}
 	
@@ -124,9 +124,9 @@ public class SingleStepFragment extends Fragment {
 	private void init() {
 		getMediaReferences();
 		pickMedia();
-		if (orientationPortrait() || dualPane) {
+		if (orientationPortrait() || masterDetailLayout) {
 			bindDescription();
-			if (! dualPane) {
+			if (! masterDetailLayout) {
 				setUpStepNavigation();
 			}
 		}

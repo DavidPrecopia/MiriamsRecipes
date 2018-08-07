@@ -20,7 +20,7 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private FragmentManager fragmentManager;
 	
-	private boolean dualPane;
+	private boolean masterDetailLayout;
 	
 	
 	@Override
@@ -36,15 +36,15 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void initializeFields() {
-		dualPane = (binding.masterDetailLayout != null);
+		masterDetailLayout = getResources().getBoolean(R.bool.master_detail_layout);
 		fragmentManager = getSupportFragmentManager();
 	}
 	
 	
 	private void setUpLayout(boolean newActivity) {
-		if (! dualPane && newActivity) {
+		if (! masterDetailLayout && newActivity) {
 			initializeFragment(getNewStepsFragmentInstance(), binding.fragmentHolder.getId());
-		} else if (dualPane) {
+		} else if (masterDetailLayout) {
 			initializeDualPaneFragments();
 		} else {
 			Timber.e(getString(R.string.error_unknown_layout_state));
@@ -57,7 +57,7 @@ public class RecipeActivity extends AppCompatActivity
 				binding.masterHolder.getId()
 		);
 		initializeFragment(
-				IngredientsFragment.newInstance(dualPane),
+				IngredientsFragment.newInstance(masterDetailLayout),
 				binding.detailHolder.getId()
 		);
 	}
@@ -77,32 +77,32 @@ public class RecipeActivity extends AppCompatActivity
 	
 	@Override
 	public void onIngredientClick() {
-		IngredientsFragment fragment = IngredientsFragment.newInstance(dualPane);
+		IngredientsFragment fragment = IngredientsFragment.newInstance(masterDetailLayout);
 		checkIfDualPane(fragment);
 	}
 	
 	@Override
 	public void onStepClick(int stepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId, dualPane);
+		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId, masterDetailLayout);
 		checkIfDualPane(fragment);
 	}
 	
 	
 	@Override
 	public void onPrevious(int currentStepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId - 1), dualPane);
+		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId - 1), masterDetailLayout);
 		checkIfDualPaneChangeStep(fragment);
 	}
 	
 	@Override
 	public void onNext(int currentStepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId + 1), dualPane);
+		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId + 1), masterDetailLayout);
 		checkIfDualPaneChangeStep(fragment);
 	}
 	
 	
 	private void checkIfDualPane(Fragment fragment) {
-		if (dualPane) {
+		if (masterDetailLayout) {
 			replaceDetailFragment(fragment);
 		} else {
 			replaceFragment(fragment);
@@ -110,7 +110,7 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void checkIfDualPaneChangeStep(SingleStepFragment fragment) {
-		if (dualPane) {
+		if (masterDetailLayout) {
 			replaceDetailFragment(fragment);
 		} else {
 			changeCurrentStep(fragment);
