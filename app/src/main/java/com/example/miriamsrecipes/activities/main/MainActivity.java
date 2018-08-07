@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,15 +65,23 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void setUpRecyclerView() {
 		RecyclerView recyclerView = binding.recyclerView;
-		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 		
-		recyclerView.setLayoutManager(layoutManager);
-		recyclerView.addItemDecoration(getDividerItemDecoration(recyclerView, layoutManager));
+		recyclerView.setLayoutManager(getLayoutManager(recyclerView));
 		recyclerView.setHasFixedSize(true);
 		
 		recyclerViewAdapter = new RecipeAdapter();
 		restoreAdapterData();
 		recyclerView.setAdapter(recyclerViewAdapter);
+	}
+	
+	private RecyclerView.LayoutManager getLayoutManager(RecyclerView recyclerView) {
+		if (getResources().getBoolean(R.bool.master_detail_layout)) {
+			return new GridLayoutManager(this, 3);
+		} else {
+			LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+			recyclerView.addItemDecoration(getDividerItemDecoration(recyclerView, linearLayoutManager));
+			return linearLayoutManager;
+		}
 	}
 	
 	/**
