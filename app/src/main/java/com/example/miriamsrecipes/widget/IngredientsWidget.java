@@ -19,7 +19,7 @@ public final class IngredientsWidget extends AppWidgetProvider {
 			
 			RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
 			view.setTextViewText(R.id.tv_recipe_name, "Banana Cream Pie");
-			view.setOnClickPendingIntent(R.id.tv_recipe_name, pendingIntent);
+			view.setOnClickPendingIntent(R.id.root_layout, pendingIntent);
 			
 			appWidgetManager.updateAppWidget(appWidgetId, view);
 		}
