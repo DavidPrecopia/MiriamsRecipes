@@ -68,7 +68,6 @@ public class RecipeActivity extends AppCompatActivity
 		);
 	}
 	
-	
 	private void initializeFragment(Fragment fragment, int layoutId) {
 		fragmentManager.beginTransaction()
 				.add(layoutId, fragment)
@@ -77,18 +76,47 @@ public class RecipeActivity extends AppCompatActivity
 	
 	
 	@Override
-	public void onStepClick(int stepId) {
-		replaceFragment(
-				SingleStepFragment.newInstance(stepId, dualPane)
-		);
+	public void onIngredientClick() {
+		IngredientsFragment fragment = IngredientsFragment.newInstance(dualPane);
+		checkIfDualPane(fragment);
 	}
 	
 	@Override
-	public void onIngredientClick() {
-		replaceFragment(
-				IngredientsFragment.newInstance(dualPane)
-		);
+	public void onStepClick(int stepId) {
+		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId, dualPane);
+		checkIfDualPane(fragment);
 	}
+	
+	
+	@Override
+	public void onPrevious(int currentStepId) {
+		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId - 1), dualPane);
+		checkIfDualPane(fragment);
+	}
+	
+	@Override
+	public void onNext(int currentStepId) {
+		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId + 1), dualPane);
+		checkIfDualPane(fragment);
+	}
+	
+	
+	private void checkIfDualPane(Fragment fragment) {
+		if (dualPane) {
+			replaceDetailFragment(fragment);
+		} else {
+			replaceFragment(fragment);
+		}
+	}
+	
+	private void checkIfDualPane(SingleStepFragment fragment) {
+		if (dualPane) {
+			replaceDetailFragment(fragment);
+		} else {
+			changeCurrentStep(fragment);
+		}
+	}
+	
 	
 	private void replaceFragment(Fragment fragment) {
 		fragmentManager.beginTransaction()
@@ -98,22 +126,13 @@ public class RecipeActivity extends AppCompatActivity
 				.commit();
 	}
 	
-	
-	@Override
-	public void onPrevious(int currentStepId) {
-		changeCurrentStep(
-				SingleStepFragment.newInstance((currentStepId - 1), dualPane)
-		);
+	private void replaceDetailFragment(Fragment fragment) {
+		fragmentManager.beginTransaction()
+				.replace(binding.detailHolder.getId(), fragment)
+				.commit();
 	}
 	
-	@Override
-	public void onNext(int currentStepId) {
-		changeCurrentStep(
-				SingleStepFragment.newInstance((currentStepId + 1), dualPane)
-		);
-	}
-	
-	private void changeCurrentStep(Fragment fragment) {
+	private void changeCurrentStep(SingleStepFragment fragment) {
 		fragmentManager.popBackStack(getString(R.string.fragments_backstack_tag), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		fragmentManager.beginTransaction()
 				.replace(R.id.fragment_holder, fragment)
