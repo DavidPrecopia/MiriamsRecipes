@@ -43,7 +43,7 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private void setUpLayout(boolean newActivity) {
 		if (! dualPane && newActivity) {
-			initializeFragment(getStepsFragment(), binding.fragmentHolder.getId());
+			initializeFragment(getNewStepsFragmentInstance(), binding.fragmentHolder.getId());
 		} else if (dualPane) {
 			initializeDualPaneFragments();
 		} else {
@@ -53,7 +53,7 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private void initializeDualPaneFragments() {
 		initializeFragment(
-				getStepsFragment(),
+				getNewStepsFragmentInstance(),
 				binding.masterHolder.getId()
 		);
 		initializeFragment(
@@ -62,7 +62,7 @@ public class RecipeActivity extends AppCompatActivity
 		);
 	}
 	
-	private StepsFragment getStepsFragment() {
+	private StepsFragment getNewStepsFragmentInstance() {
 		return StepsFragment.newInstance(
 				getIntent().getParcelableExtra(RecipeActivity.class.getSimpleName())
 		);
@@ -91,13 +91,13 @@ public class RecipeActivity extends AppCompatActivity
 	@Override
 	public void onPrevious(int currentStepId) {
 		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId - 1), dualPane);
-		checkIfDualPane(fragment);
+		checkIfDualPaneChangeStep(fragment);
 	}
 	
 	@Override
 	public void onNext(int currentStepId) {
 		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId + 1), dualPane);
-		checkIfDualPane(fragment);
+		checkIfDualPaneChangeStep(fragment);
 	}
 	
 	
@@ -109,7 +109,7 @@ public class RecipeActivity extends AppCompatActivity
 		}
 	}
 	
-	private void checkIfDualPane(SingleStepFragment fragment) {
+	private void checkIfDualPaneChangeStep(SingleStepFragment fragment) {
 		if (dualPane) {
 			replaceDetailFragment(fragment);
 		} else {

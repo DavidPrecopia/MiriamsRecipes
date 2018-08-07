@@ -115,6 +115,8 @@ public class StepsFragment extends Fragment {
 	
 	final class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHolder> {
 		
+		private int lastSelectedPosition = RecyclerView.NO_POSITION;
+		
 		private final List<StepItem> stepsList;
 		
 		StepsAdapter(List<StepItem> stepsList) {
@@ -151,16 +153,35 @@ public class StepsFragment extends Fragment {
 				binding.getRoot().setOnClickListener(this);
 			}
 			
+			
 			void bindViews() {
+				highlightStep();
 				binding.setStep(stepsList.get(getAdapterPosition()));
 				binding.executePendingBindings();
 			}
 			
+			private void highlightStep() {
+				if (lastSelectedPosition == getAdapterPosition()) {
+					binding.rootLayout.setSelected(true);
+				} else {
+					binding.rootLayout.setSelected(false);
+				}
+			}
+			
+			
 			@Override
 			public void onClick(View view) {
+				manageHighlightedStep();
 				fragmentClickListener.onStepClick(
 						stepsList.get(getAdapterPosition()).getId()
 				);
+			}
+			
+			private void manageHighlightedStep() {
+				int oldPosition = lastSelectedPosition;
+				lastSelectedPosition = getAdapterPosition();
+				notifyItemChanged(oldPosition);
+				notifyItemChanged(lastSelectedPosition);
 			}
 		}
 	}

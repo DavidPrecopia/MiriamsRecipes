@@ -15,6 +15,8 @@
 		style="@style/ListItemCardView" >
 		
 		<android.support.constraint.ConstraintLayout
+			android:background="@drawable/list_item_selector"
+			android:id="@+id/root_layout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 			

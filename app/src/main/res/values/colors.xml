@@ -5,6 +5,7 @@
 	<color name="colorAccent">#536DFE</color>
 	
 	<color name="white">#FFFFFF</color>
+	<color name="green">#80008000</color>
 	
 	<color name="exoPlayerControls">@color/colorPrimary</color>
 </resources>
