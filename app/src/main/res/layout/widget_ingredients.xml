@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	
+	<TextView
+		android:id="@+id/tv_recipe_name"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/touch_height_normal"
+		android:background="@color/colorPrimary"
+		android:gravity="center"
+		android:text="@string/app_name"
+		android:textAppearance="@style/TextPrimary"
+		android:textColor="@color/white" />
+	
+	<ListView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+</LinearLayout>
