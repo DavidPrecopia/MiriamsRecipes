@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.example.miriamsrecipes"
         minSdkVersion 19
-        // Staying with API 27 because API 28 and its support libraries are still in beta
+        // The support library for API 28 is still in beta
         //noinspection OldTargetApi
         targetSdkVersion 27
         versionCode 1
