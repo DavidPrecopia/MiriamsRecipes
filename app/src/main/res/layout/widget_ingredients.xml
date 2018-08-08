@@ -28,7 +28,7 @@
 		android:contentDescription="@string/widget_description_settings"
 		android:paddingEnd="@dimen/margin_normal"
 		android:paddingStart="@dimen/margin_normal"
-		app:srcCompat="@drawable/ic_settings_cog_24dp" />
+		app:srcCompat="@drawable/ic_settings_cog_18dp" />
 	
 	<ListView
 		android:id="@+id/widget_list_view_ingredients"
