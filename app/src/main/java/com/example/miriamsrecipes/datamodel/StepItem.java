@@ -38,7 +38,6 @@ public class StepItem implements Parcelable {
 	/**
 	 * Implementation of Parcelable
 	 */
-	
 	@Override
 	public int describeContents() {
 		return 0;

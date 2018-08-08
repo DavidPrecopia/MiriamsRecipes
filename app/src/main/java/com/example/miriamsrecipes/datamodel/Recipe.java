@@ -49,7 +49,6 @@ public class Recipe implements Parcelable {
 	/**
 	 * Implementation of Parcelable
 	 */
-	
 	@Override
 	public int describeContents() {
 		return 0;
