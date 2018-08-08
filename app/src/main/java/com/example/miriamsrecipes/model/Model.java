@@ -1,7 +1,6 @@
 package com.example.miriamsrecipes.model;
 
 import android.app.Application;
-import android.database.SQLException;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.RecipeInfo;
@@ -14,7 +13,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public final class Model implements IModelContract {
 	
@@ -62,12 +63,13 @@ public final class Model implements IModelContract {
 	}
 	
 	private void populateDatabase() {
-		List<Long> insertResults = dao.popularDatabase(parseJson());
-		if (insertResults.isEmpty() || insertResults.get(0) <= 0) {
-			throw new SQLException("Error populating the database");
-		}
+		Completable.fromCallable(() -> dao.popularDatabase(parseJson()))
+				.subscribeOn(Schedulers.io())
+				.subscribe();
 		databasePopulated = true;
 	}
+	
+	
 	
 	private List<Recipe> parseJson() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(rawJson));
