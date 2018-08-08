@@ -22,7 +22,7 @@ public final class Model implements IModelContract {
 	
 	private static Model model;
 	
-	public static Model getInstance(Application application) {
+	public synchronized static Model getInstance(Application application) {
 		if (model == null) {
 			model = new Model(application);
 		}
