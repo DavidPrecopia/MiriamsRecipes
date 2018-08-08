@@ -6,7 +6,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
-import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.model.IModelContract;
 import com.example.miriamsrecipes.model.Model;
 
@@ -20,7 +19,7 @@ import timber.log.Timber;
 
 final class MainViewModel extends AndroidViewModel {
 	
-	private final MutableLiveData<List<Recipe>> recipes;
+	private final MutableLiveData<List<RecipeInfo>> recipes;
 	
 	private final CompositeDisposable disposable;
 	private final IModelContract model;
@@ -39,18 +38,18 @@ final class MainViewModel extends AndroidViewModel {
 	
 	
 	private void getRecipesFromModel() {
-		disposable.add(model.getRecipes()
+		disposable.add(model.getAllRecipes()
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribeWith(observer())
 		);
 	}
 	
-	private DisposableSingleObserver<List<Recipe>> observer() {
-		return new DisposableSingleObserver<List<Recipe>>() {
+	private DisposableSingleObserver<List<RecipeInfo>> observer() {
+		return new DisposableSingleObserver<List<RecipeInfo>>() {
 			@Override
-			public void onSuccess(List<Recipe> recipes) {
-				MainViewModel.this.recipes.setValue(recipes);
+			public void onSuccess(List<RecipeInfo> recipeInfoList) {
+				MainViewModel.this.recipes.setValue(recipeInfoList);
 			}
 			
 			@Override
@@ -61,13 +60,14 @@ final class MainViewModel extends AndroidViewModel {
 	}
 	
 	
+	LiveData<List<RecipeInfo>> getRecipes() {
+		return recipes;
+	}
+	
+	
 	@Override
 	protected void onCleared() {
 		super.onCleared();
 		disposable.clear();
-	}
-	
-	LiveData<List<Recipe>> getRecipes() {
-		return recipes;
 	}
 }

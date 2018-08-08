@@ -26,19 +26,19 @@ public final class RecipeInfo {
 	}
 	
 	
-	int getId() {
+	public int getId() {
 		return id;
 	}
 	
-	String getName() {
+	public String getName() {
 		return name;
 	}
 	
-	int getServings() {
+	public int getServings() {
 		return servings;
 	}
 	
-	String getImage() {
+	public String getImage() {
 		return image;
 	}
 }

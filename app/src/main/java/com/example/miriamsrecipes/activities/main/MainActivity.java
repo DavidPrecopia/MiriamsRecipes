@@ -17,7 +17,6 @@ import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.recipe.RecipeActivity;
 import com.example.miriamsrecipes.databinding.ActivityMainBinding;
 import com.example.miriamsrecipes.databinding.ListItemRecipeBinding;
-import com.example.miriamsrecipes.datamodel.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 	 * restores scroll state by RecyclerView itself.
 	 */
 	private void restoreAdapterData() {
-		List<Recipe> recipeList = viewModel.getRecipes().getValue();
+		List<RecipeInfo> recipeList = viewModel.getRecipes().getValue();
 		if (recipeList == null || recipeList.isEmpty()) {
 			return;
 		}
@@ -113,16 +112,16 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	
-	private void openSpecificRecipe(final Recipe recipe) {
+	private void openSpecificRecipe(final int recipeId) {
 		Intent intent = new Intent(this, RecipeActivity.class);
-		intent.putExtra(RecipeActivity.class.getSimpleName(), recipe);
+		intent.putExtra(RecipeActivity.class.getSimpleName(), recipeId);
 		startActivity(intent);
 	}
 	
 	
 	final class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 		
-		private final List<Recipe> recipes;
+		private final List<RecipeInfo> recipes;
 		
 		RecipeAdapter() {
 			this.recipes = new ArrayList<>();
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 			holder.bindView();
 		}
 		
-		void replaceData(List<Recipe> newRecipes) {
+		void replaceData(List<RecipeInfo> newRecipes) {
 			recipes.clear();
 			recipes.addAll(newRecipes);
 			notifyDataSetChanged();
@@ -171,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				openSpecificRecipe(
-						recipes.get(getAdapterPosition())
+						recipes.get(getAdapterPosition()).getId()
 				);
 			}
 		}
