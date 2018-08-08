@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.ActivityRecipeBinding;
@@ -31,6 +32,7 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void init(boolean newActivity) {
+		progressBarVisibility(View.VISIBLE);
 		setUpViewModel();
 		initializeFields(newActivity);
 		observeViewModel();
@@ -57,9 +59,11 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void observeViewModel() {
-		viewModel.getRecipe().observe(this, recipe -> setUpLayout());
+		viewModel.getRecipe().observe(this, recipe -> {
+			setUpLayout();
+			progressBarVisibility(View.GONE);
+		});
 	}
-	
 	
 	
 	private void setUpLayout() {
@@ -155,6 +159,11 @@ public class RecipeActivity extends AppCompatActivity
 				.addToBackStack(getString(R.string.fragments_backstack_tag))
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.commit();
+	}
+	
+	
+	private void progressBarVisibility(int visibility) {
+		binding.progressBar.setVisibility(visibility);
 	}
 	
 	
