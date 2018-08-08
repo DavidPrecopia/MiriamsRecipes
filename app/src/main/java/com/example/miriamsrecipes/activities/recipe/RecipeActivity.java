@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.ActivityRecipeBinding;
 
-import timber.log.Timber;
-
 public class RecipeActivity extends AppCompatActivity
 		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
 		SingleStepFragment.ChangeStepListener {
@@ -47,7 +45,7 @@ public class RecipeActivity extends AppCompatActivity
 		} else if (masterDetailLayout) {
 			initializeDualPaneFragments();
 		} else {
-			Timber.e(getString(R.string.error_unknown_layout_state));
+			throw new IllegalStateException(getString(R.string.error_unknown_layout_state));
 		}
 	}
 	
