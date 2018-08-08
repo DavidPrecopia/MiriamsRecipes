@@ -1,6 +1,8 @@
 package com.example.miriamsrecipes.model;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
+import android.database.SQLException;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.RecipeInfo;
@@ -13,16 +15,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import io.reactivex.Completable;
+import io.reactivex.MaybeObserver;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public final class Model implements IModelContract {
 	
 	private final RecipeDao dao;
 	
-	private boolean databasePopulated = false;
-	private final InputStream rawJson;
+	private InputStream rawJson;
 	
 	private static Model model;
 	
@@ -36,40 +40,76 @@ public final class Model implements IModelContract {
 	private Model(Application application) {
 		dao = AppDatabase.getInstance(application).getRecipeDao();
 		rawJson = application.getResources().openRawResource(R.raw.udacity_miriam_recipes);
+		populateDatabase();
 	}
 	
 	
 	@Override
-	public Single<List<RecipeInfo>> getAllRecipes() {
-		checkDatabase();
+	public LiveData<List<RecipeInfo>> getAllRecipes() {
 		return dao.getAllRecipes();
 	}
 	
 	@Override
 	public Single<Recipe> getSingleRecipe(int recipeId) {
-		checkDatabase();
 		return dao.getSingleRecipe(recipeId);
 	}
 	
 	
-	/**
-	 * This check ensure that insertion happens on a background thread
-	 */
-	private void checkDatabase() {
-		if (databasePopulated) {
-			return;
-		}
-		populateDatabase();
-	}
-	
 	private void populateDatabase() {
-		Completable.fromCallable(() -> dao.popularDatabase(parseJson()))
+		dao.checkDatabase()
 				.subscribeOn(Schedulers.io())
-				.subscribe();
-		databasePopulated = true;
+				.subscribe(checkObserver());
+	}
+	
+	private MaybeObserver<? super Integer> checkObserver() {
+		return new MaybeObserver<Integer>() {
+			@Override
+			public void onSubscribe(Disposable d) {
+			
+			}
+			
+			@Override
+			public void onSuccess(Integer integer) {
+				Timber.i("The database is populated");
+			}
+			
+			@Override
+			public void onError(Throwable e) {
+				throw new SQLException("Error checking the database");
+			}
+			
+			@Override
+			public void onComplete() {
+				insertRecipes();
+			}
+		};
 	}
 	
 	
+	private void insertRecipes() {
+		Single.fromCallable(() -> dao.popularDatabase(parseJson()))
+				.subscribeOn(Schedulers.io())
+				.subscribe(populateObserver());
+	}
+	
+	private SingleObserver<List<Long>> populateObserver() {
+		return new SingleObserver<List<Long>>() {
+			@Override
+			public void onSubscribe(Disposable d) {
+			
+			}
+			
+			@Override
+			public void onSuccess(List<Long> longs) {
+				Timber.i("Successfully populated database.");
+			}
+			
+			@Override
+			public void onError(Throwable e) {
+				throw new SQLException("Error populating the database");
+			}
+		};
+	}
 	
 	private List<Recipe> parseJson() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(rawJson));
