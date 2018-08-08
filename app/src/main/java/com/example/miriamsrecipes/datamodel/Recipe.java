@@ -1,5 +1,6 @@
 package com.example.miriamsrecipes.datamodel;
 
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,7 +14,10 @@ public class Recipe implements Parcelable {
 	private int servings;
 	private String image;
 	
+	@TypeConverters(IngredientsItemTypeConverter.class)
 	private List<IngredientsItem> ingredients;
+	
+	@TypeConverters(StepItemTypeConverter.class)
 	private List<StepItem> steps;
 	
 	
