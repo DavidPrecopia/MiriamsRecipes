@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--IngredientsWidget-->
+	<string name="widget_description_settings">Open the recipe selection screen</string>
+</resources>
