@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/white">
+	
+	<TextView
+		android:id="@+id/widget_tv_ingredient_name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="@dimen/margin_normal"
+		android:layout_marginTop="@dimen/margin_medium"
+		android:textAppearance="@style/TextPrimary"
+		tools:text="light brown sugar" />
+	
+	<TextView
+		android:id="@+id/widget_tv_ingredient_quantity"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignStart="@id/widget_tv_ingredient_name"
+		android:layout_below="@id/widget_tv_ingredient_name"
+		android:layout_marginBottom="8dp"
+		android:layout_marginTop="@dimen/margin_small"
+		android:textAppearance="@style/TextPrimary"
+		tools:text="5" />
+	
+	<TextView
+		android:id="@+id/widget_tv_ingredient_measurement"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@id/widget_tv_ingredient_quantity"
+		android:layout_marginStart="@dimen/margin_small"
+		android:layout_toEndOf="@id/widget_tv_ingredient_quantity"
+		android:textAppearance="@style/TextPrimary"
+		tools:text="cup" />
+
+</RelativeLayout>

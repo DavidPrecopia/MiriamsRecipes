@@ -8,4 +8,5 @@
 	<color name="green">#80008000</color>
 	
 	<color name="exoPlayerControls">@color/colorPrimary</color>
+	<color name="black">#000000</color>
 </resources>

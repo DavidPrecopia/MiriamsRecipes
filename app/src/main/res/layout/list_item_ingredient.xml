@@ -15,7 +15,7 @@
 		android:layout_height="wrap_content">
 		
 		<TextView
-			android:id="@+id/tv_name"
+			android:id="@+id/tv_ingredient_name"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="@dimen/margin_normal"
@@ -27,7 +27,7 @@
 			tools:text="light brown sugar" />
 		
 		<TextView
-			android:id="@+id/tv_quantity"
+			android:id="@+id/tv_ingredient_quantity"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="8dp"
@@ -35,19 +35,19 @@
 			android:text="@{String.valueOf(ingredient.quantity)}"
 			android:textAppearance="@style/TextPrimary"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintStart_toStartOf="@+id/tv_name"
-			app:layout_constraintTop_toBottomOf="@+id/tv_name"
+			app:layout_constraintStart_toStartOf="@+id/tv_ingredient_name"
+			app:layout_constraintTop_toBottomOf="@+id/tv_ingredient_name"
 			tools:text="5" />
 		
 		<TextView
-			android:id="@+id/tv_measurement"
+			android:id="@+id/tv_ingredient_measurement"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="@dimen/margin_small"
 			android:text="@{ingredient.measure}"
 			android:textAppearance="@style/TextPrimary"
-			app:layout_constraintBaseline_toBaselineOf="@+id/tv_quantity"
-			app:layout_constraintStart_toEndOf="@+id/tv_quantity"
+			app:layout_constraintBaseline_toBaselineOf="@+id/tv_ingredient_quantity"
+			app:layout_constraintStart_toEndOf="@+id/tv_ingredient_quantity"
 			tools:text="cup" />
 	</android.support.constraint.ConstraintLayout>
 
