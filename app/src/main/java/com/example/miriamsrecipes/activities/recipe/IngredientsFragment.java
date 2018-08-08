@@ -25,7 +25,7 @@ public class IngredientsFragment extends Fragment {
 	
 	private static final String MASTER_DETAIL_LAYOUT_KEY = "master_detail_layout_key";
 	
-	private SharedFragmentsViewModel viewModel;
+	private RecipeViewModel viewModel;
 	private FragmentIngredientsBinding binding;
 	
 	private boolean masterDetailLayout;
@@ -47,7 +47,7 @@ public class IngredientsFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		masterDetailLayout = getArguments().getBoolean(MASTER_DETAIL_LAYOUT_KEY);
-		viewModel = ViewModelProviders.of(getActivity()).get(SharedFragmentsViewModel.class);
+		viewModel = ViewModelProviders.of(getActivity()).get(RecipeViewModel.class);
 	}
 	
 	
@@ -79,7 +79,7 @@ public class IngredientsFragment extends Fragment {
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.addItemDecoration(getDividerItemDecoration(recyclerView, linearLayoutManager));
 		recyclerView.setHasFixedSize(true);
-		recyclerView.setAdapter(new IngredientAdapter(viewModel.getRecipe().getIngredients()));
+		recyclerView.setAdapter(new IngredientAdapter(viewModel.getRecipe().getValue().getIngredients()));
 	}
 	
 	private RecyclerView.ItemDecoration getDividerItemDecoration(RecyclerView recyclerView, LinearLayoutManager layoutManager) {

@@ -48,7 +48,7 @@ public class SingleStepFragment extends Fragment {
 	private static final String MASTER_DETAIL_LAYOUT_KEY = "master_detail_layout_key";
 	
 	private StepItem step;
-	private SharedFragmentsViewModel viewModel;
+	private RecipeViewModel viewModel;
 	private FragmentSingleStepBinding binding;
 	
 	private PlayerView playerView;
@@ -70,7 +70,7 @@ public class SingleStepFragment extends Fragment {
 	public SingleStepFragment() {
 	}
 	
-	public static SingleStepFragment newInstance(int stepId,boolean dualPane) {
+	public static SingleStepFragment newInstance(int stepId, boolean dualPane) {
 		SingleStepFragment fragment = new SingleStepFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(STEP_ID_KEY, stepId);
@@ -87,9 +87,10 @@ public class SingleStepFragment extends Fragment {
 	}
 	
 	private void getStep() {
+		viewModel = ViewModelProviders.of(getActivity()).get(RecipeViewModel.class);
+		
 		int stepId = getArguments().getInt(STEP_ID_KEY);
-		viewModel = ViewModelProviders.of(getActivity()).get(SharedFragmentsViewModel.class);
-		step = viewModel.getRecipe().getSteps().get(stepId);
+		step = viewModel.getRecipe().getValue().getSteps().get(stepId);
 	}
 	
 	@Override
@@ -248,7 +249,7 @@ public class SingleStepFragment extends Fragment {
 	
 	private void setNextStepClickListener() {
 		binding.ivNextArrow.setOnClickListener(view -> {
-			if (step.getId() == (viewModel.getRecipe().getSteps().size() - 1)) {
+			if (step.getId() == (viewModel.getRecipe().getValue().getSteps().size() - 1)) {
 				infoToast(getString(R.string.error_reached_last_step));
 				return;
 			}
@@ -258,7 +259,7 @@ public class SingleStepFragment extends Fragment {
 	
 	private void bindStepIndicator() {
 		binding.tvCurrentStep.setText(String.valueOf(step.getId() + 1));
-		binding.tvTotalSteps.setText(String.valueOf(viewModel.getRecipe().getSteps().size()));
+		binding.tvTotalSteps.setText(String.valueOf(viewModel.getRecipe().getValue().getSteps().size()));
 	}
 	
 	

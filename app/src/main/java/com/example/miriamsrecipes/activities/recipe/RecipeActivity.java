@@ -1,5 +1,6 @@
 package com.example.miriamsrecipes.activities.recipe;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,13 @@ public class RecipeActivity extends AppCompatActivity
 		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
 		SingleStepFragment.ChangeStepListener {
 	
+	private RecipeViewModel viewModel;
 	private ActivityRecipeBinding binding;
 	
 	private FragmentManager fragmentManager;
 	
 	private boolean masterDetailLayout;
-	
+	private boolean newActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +31,40 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void init(boolean newActivity) {
-		initializeFields();
-		setUpLayout(newActivity);
+		setUpViewModel();
+		initializeFields(newActivity);
+		observeViewModel();
 	}
 	
-	private void initializeFields() {
+	/**
+	 * Creating the ViewModel in the Activity fixes a crash caused
+	 * by rotating the device when the app is in the background.
+	 * This issue is similar to a known issue with ViewModel,
+	 * https://issuetracker.google.com/issues/72690424#comment10
+	 */
+	private void setUpViewModel() {
+		ViewModelFactory factory = new ViewModelFactory(
+				getApplication(),
+				getIntent().getIntExtra(RecipeActivity.class.getSimpleName(), 0)
+		);
+		viewModel = ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
+	}
+	
+	private void initializeFields(boolean newActivity) {
 		masterDetailLayout = getResources().getBoolean(R.bool.master_detail_layout);
 		fragmentManager = getSupportFragmentManager();
+		this.newActivity = newActivity;
+	}
+	
+	private void observeViewModel() {
+		viewModel.getRecipe().observe(this, recipe -> setUpLayout());
 	}
 	
 	
-	private void setUpLayout(boolean newActivity) {
+	
+	private void setUpLayout() {
 		if (! masterDetailLayout && newActivity) {
-			initializeFragment(getNewStepsFragmentInstance(), binding.fragmentHolder.getId());
+			initializeFragment(StepsFragment.newInstance(), binding.fragmentHolder.getId());
 		} else if (masterDetailLayout) {
 			initializeDualPaneFragments();
 		} else {
@@ -51,7 +74,7 @@ public class RecipeActivity extends AppCompatActivity
 	
 	private void initializeDualPaneFragments() {
 		initializeFragment(
-				getNewStepsFragmentInstance(),
+				StepsFragment.newInstance(),
 				binding.masterHolder.getId()
 		);
 		initializeFragment(
@@ -60,11 +83,6 @@ public class RecipeActivity extends AppCompatActivity
 		);
 	}
 	
-	private StepsFragment getNewStepsFragmentInstance() {
-		return StepsFragment.newInstance(
-				getIntent().getParcelableExtra(RecipeActivity.class.getSimpleName())
-		);
-	}
 	
 	private void initializeFragment(Fragment fragment, int layoutId) {
 		fragmentManager.beginTransaction()

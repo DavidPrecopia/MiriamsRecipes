@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.FragmentStepsBinding;
 import com.example.miriamsrecipes.databinding.ListItemStepBinding;
-import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.datamodel.StepItem;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class StepsFragment extends Fragment {
 	private static final String RECIPE_KEY = "recipe_key";
 	
 	private FragmentStepsBinding binding;
-	private SharedFragmentsViewModel viewModel;
+	private RecipeViewModel viewModel;
 	
 	private FragmentClickListener fragmentClickListener;
 	private IngredientClickListener ingredientClickListener;
@@ -38,23 +37,14 @@ public class StepsFragment extends Fragment {
 	public StepsFragment() {
 	}
 	
-	public static StepsFragment newInstance(Recipe recipe) {
-		StepsFragment fragment = new StepsFragment();
-		Bundle bundle = new Bundle();
-		bundle.putParcelable(RECIPE_KEY, recipe);
-		fragment.setArguments(bundle);
-		return fragment;
+	public static StepsFragment newInstance() {
+		return new StepsFragment();
 	}
 	
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setUpViewModel();
-	}
-	
-	private void setUpViewModel() {
-		ViewModelFactory factory = new ViewModelFactory(getArguments().getParcelable(RECIPE_KEY));
-		viewModel = ViewModelProviders.of(getActivity(), factory).get(SharedFragmentsViewModel.class);
+		viewModel = ViewModelProviders.of(getActivity()).get(RecipeViewModel.class);
 	}
 	
 	
@@ -76,7 +66,7 @@ public class StepsFragment extends Fragment {
 		((AppCompatActivity) getActivity()).setSupportActionBar(binding.appBar.toolbar);
 		ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(viewModel.getRecipe().getName());
+		actionBar.setTitle(viewModel.getRecipe().getValue().getName());
 	}
 	
 	private void setFragmentClickListener() {
@@ -101,7 +91,7 @@ public class StepsFragment extends Fragment {
 		recyclerView.setNestedScrollingEnabled(false);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setHasFixedSize(true);
-		recyclerView.setAdapter(new StepsAdapter(viewModel.getRecipe().getSteps()));
+		recyclerView.setAdapter(new StepsAdapter(viewModel.getRecipe().getValue().getSteps()));
 	}
 	
 	
