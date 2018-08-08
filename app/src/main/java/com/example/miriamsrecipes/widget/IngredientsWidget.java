@@ -36,7 +36,7 @@ public final class IngredientsWidget extends AppWidgetProvider {
 	
 	private void setUpView(Context context, RemoteViews view) {
 		view.setTextViewText(R.id.tv_recipe_name, "Banana Cream Pie");
-		Intent adapterIntent = new Intent(context, MyRemoteViewService.class);
+		Intent adapterIntent = new Intent(context, WidgetRemoteViewService.class);
 		view.setRemoteAdapter(R.id.widget_list_view_ingredients, adapterIntent);
 	}
 }

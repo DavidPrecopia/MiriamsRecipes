@@ -18,7 +18,10 @@ final class MyRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
 	MyRemoteViewsFactory(Application application) {
 		this.tempList = new ArrayList<>();
 		this.application = application;
-		
+	}
+	
+	@Override
+	public void onCreate() {
 		tempList.add("1");
 		tempList.add("2");
 		tempList.add("3");
@@ -33,11 +36,6 @@ final class MyRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
 	
 	
 	@Override
-	public int getCount() {
-		return tempList.size();
-	}
-	
-	@Override
 	public RemoteViews getViewAt(int position) {
 		RemoteViews view = new RemoteViews(application.getPackageName(), R.layout.list_view_item_ingredient);
 		view.setTextViewText(R.id.widget_tv_ingredient_name, tempList.get(position));
@@ -46,11 +44,11 @@ final class MyRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
 		return view;
 	}
 	
-	
 	@Override
-	public void onCreate() {
-	
+	public int getCount() {
+		return tempList.size();
 	}
+	
 	
 	@Override
 	public void onDataSetChanged() {

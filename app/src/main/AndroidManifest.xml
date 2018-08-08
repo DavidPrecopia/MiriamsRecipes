@@ -40,7 +40,7 @@
 		</receiver>
 		
 		<service
-			android:name=".widget.MyRemoteViewService"
+			android:name=".widget.WidgetRemoteViewService"
 			android:permission="android.permission.BIND_REMOTEVIEWS" />
 	</application>
 </manifest>
