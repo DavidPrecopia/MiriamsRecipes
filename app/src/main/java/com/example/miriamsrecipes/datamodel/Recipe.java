@@ -1,24 +1,48 @@
 package com.example.miriamsrecipes.datamodel;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.miriamsrecipes.model.DatabaseContract;
+
 import java.util.List;
 
+@Entity(tableName = DatabaseContract.TABLE_NAME_RECIPE)
 public class Recipe implements Parcelable {
 	
+	@PrimaryKey
+	@ColumnInfo(name = DatabaseContract.COLUMN_RECIPE_ID)
 	private int id;
 	
+	@ColumnInfo(name = DatabaseContract.COLUMN_NAME)
 	private String name;
+	
+	@ColumnInfo(name = DatabaseContract.COLUMN_SERVINGS)
 	private int servings;
+	
+	@ColumnInfo(name = DatabaseContract.COLUMN_IMAGE)
 	private String image;
+	
 	
 	@TypeConverters(IngredientsItemTypeConverter.class)
 	private List<IngredientsItem> ingredients;
 	
 	@TypeConverters(StepItemTypeConverter.class)
 	private List<StepItem> steps;
+	
+	
+	public Recipe(int id, String name, int servings, String image, List<IngredientsItem> ingredients, List<StepItem> steps) {
+		this.id = id;
+		this.name = name;
+		this.servings = servings;
+		this.image = image;
+		this.ingredients = ingredients;
+		this.steps = steps;
+	}
 	
 	
 	public int getId(){

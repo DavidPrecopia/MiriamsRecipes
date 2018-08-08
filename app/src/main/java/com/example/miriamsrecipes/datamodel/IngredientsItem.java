@@ -11,6 +11,13 @@ public class IngredientsItem implements Parcelable {
 	private String ingredient;
 	
 	
+	public IngredientsItem(double quantity, String measure, String ingredient) {
+		this.quantity = quantity;
+		this.measure = measure;
+		this.ingredient = ingredient;
+	}
+	
+	
 	public double getQuantity() {
 		return quantity;
 	}
