@@ -7,6 +7,8 @@ import com.example.miriamsrecipes.R;
 
 public class IngredientsWidgetConfigActivity extends AppCompatActivity {
 	
+	public static final String SHARED_PERF_NAME = IngredientsWidgetConfigActivity.class.getSimpleName();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

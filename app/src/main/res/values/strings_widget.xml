@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!--IngredientsWidget-->
+	<string name="widget_key_recipe_id">widget_key_recipe_id</string>
+	<string name="widget_key_recipe_name">widget_key_recipe_name</string>
+	
+	<!--widget_ingredients-->
 	<string name="widget_description_settings">Open the recipe selection screen</string>
 </resources>

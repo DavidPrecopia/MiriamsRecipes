@@ -5,11 +5,13 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.MainActivity;
+import com.example.miriamsrecipes.activities.widgetconfig.IngredientsWidgetConfigActivity;
 
 public final class IngredientsWidget extends AppWidgetProvider {
 	@Override
@@ -23,8 +25,13 @@ public final class IngredientsWidget extends AppWidgetProvider {
 	@NonNull
 	private RemoteViews updateWidget(Context context) {
 		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
+		
+		SharedPreferences preferences = context.getSharedPreferences(IngredientsWidgetConfigActivity.SHARED_PERF_NAME, Context.MODE_PRIVATE);
+		String recipeName = preferences.getString(context.getString(R.string.widget_key_recipe_name), null);
+		int recipeId = preferences.getInt(context.getString(R.string.widget_key_recipe_id), -1);
+		
 		setPendingIntent(context, view);
-		setUpView(context, view);
+		setUpView(context, view, recipeId, recipeName);
 		return view;
 	}
 	
@@ -34,9 +41,11 @@ public final class IngredientsWidget extends AppWidgetProvider {
 		view.setOnClickPendingIntent(R.id.root_layout, pendingIntent);
 	}
 	
-	private void setUpView(Context context, RemoteViews view) {
-		view.setTextViewText(R.id.tv_recipe_name, "Banana Cream Pie");
+	private void setUpView(Context context, RemoteViews view, int recipeId, String recipeName) {
+		view.setTextViewText(R.id.tv_recipe_name, recipeName);
+		
 		Intent adapterIntent = new Intent(context, WidgetRemoteViewService.class);
+		adapterIntent.putExtra(context.getString(R.string.widget_key_recipe_id), recipeId);
 		view.setRemoteAdapter(R.id.widget_list_view_ingredients, adapterIntent);
 	}
 }
