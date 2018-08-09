@@ -26,7 +26,7 @@ public final class Model implements IModelContract {
 	
 	private final RecipeDao dao;
 	
-	private InputStream rawJson;
+	private final InputStream rawJson;
 	
 	private static Model model;
 	

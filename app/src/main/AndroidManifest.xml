@@ -42,7 +42,11 @@
 			android:name=".widget.WidgetRemoteViewService"
 			android:permission="android.permission.BIND_REMOTEVIEWS" />
 		
-		<activity android:name=".activities.widgetconfig.IngredientsWidgetConfigActivity"></activity>
+		<activity android:name=".activities.widgetconfig.IngredientsWidgetConfigActivity">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
 	</application>
 
 </manifest>
