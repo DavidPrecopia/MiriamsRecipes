@@ -10,8 +10,6 @@ import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.MainActivity;
 import com.example.miriamsrecipes.activities.widgetconfig.IngredientsWidgetConfigActivity;
 
-import timber.log.Timber;
-
 public final class IngredientsRemoteView {
 	
 	public IngredientsRemoteView() {
@@ -56,8 +54,6 @@ public final class IngredientsRemoteView {
 	}
 	
 	private void setUpView(Context context, RemoteViews view, int recipeId, String recipeName, int appWidgetId) {
-		Timber.d("recipeID " + recipeId + "\nName " + recipeName + "\nWidgetId " +appWidgetId);
-		
 		view.setTextViewText(R.id.tv_recipe_name, recipeName);
 		
 		Intent adapterIntent = new Intent(context, IngredientsRemoteViewService.class);

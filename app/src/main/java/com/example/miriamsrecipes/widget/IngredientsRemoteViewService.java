@@ -1,5 +1,6 @@
 package com.example.miriamsrecipes.widget;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
@@ -11,7 +12,7 @@ public final class IngredientsRemoteViewService extends RemoteViewsService {
 		return new IngredientsRemoteViewsFactory(
 				getApplication(),
 				intent.getIntExtra(getApplicationContext().getString(R.string.widget_key_recipe_id), - 1),
-				intent.getIntExtra(getApplicationContext().getString(R.string.widget_key_widget_id), 0)
+				intent.getIntExtra(getApplicationContext().getString(R.string.widget_key_widget_id), AppWidgetManager.INVALID_APPWIDGET_ID)
 		);
 	}
 }

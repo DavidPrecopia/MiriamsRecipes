@@ -12,6 +12,7 @@ import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.model.IModelContract;
 import com.example.miriamsrecipes.model.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
@@ -21,25 +22,26 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 	private final int recipeId;
 	private List<IngredientsItem> ingredients;
 	
+	private final IModelContract model;
 	private final Observer<Recipe> observer;
 	
-	private final IModelContract model;
 	
-	IngredientsRemoteViewsFactory(Application application, int recipeId, int sdfsdfdf) {
+	IngredientsRemoteViewsFactory(Application application, int recipeId, int widgetId) {
 		this.application = application;
 		this.recipeId = recipeId;
+		this.ingredients = new ArrayList<>();
+		
 		this.observer = (recipe) -> {
 			ingredients.clear();
 			ingredients.addAll(recipe.getIngredients());
-			AppWidgetManager.getInstance(application).notifyAppWidgetViewDataChanged(sdfsdfdf, R.id.widget_list_view_ingredients);
+			AppWidgetManager.getInstance(application).notifyAppWidgetViewDataChanged(widgetId, R.id.widget_list_view_ingredients);
 		};
 		this.model = Model.getInstance(application);
-		
-		model.getSingleRecipe(recipeId).observeForever(observer);
 	}
 	
 	@Override
 	public void onCreate() {
+		model.getSingleRecipe(recipeId).observeForever(observer);
 	}
 	
 	
