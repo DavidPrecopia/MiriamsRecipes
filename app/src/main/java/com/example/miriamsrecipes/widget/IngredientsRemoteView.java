@@ -9,7 +9,8 @@ import android.widget.RemoteViews;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.MainActivity;
 import com.example.miriamsrecipes.activities.widgetconfig.IngredientsWidgetConfigActivity;
-import com.example.miriamsrecipes.util.SharedPrefWidgetKey;
+
+import timber.log.Timber;
 
 public final class IngredientsRemoteView {
 	
@@ -28,7 +29,8 @@ public final class IngredientsRemoteView {
 				context,
 				view,
 				getRecipeId(context, appWidgetId, preferences),
-				getRecipeName(context, appWidgetId, preferences)
+				getRecipeName(context, appWidgetId, preferences),
+				appWidgetId
 		);
 		return view;
 	}
@@ -53,11 +55,14 @@ public final class IngredientsRemoteView {
 		view.setOnClickPendingIntent(R.id.root_layout, pendingIntent);
 	}
 	
-	private void setUpView(Context context, RemoteViews view, int recipeId, String recipeName) {
+	private void setUpView(Context context, RemoteViews view, int recipeId, String recipeName, int appWidgetId) {
+		Timber.d("recipeID " + recipeId + "\nName " + recipeName + "\nWidgetId " +appWidgetId);
+		
 		view.setTextViewText(R.id.tv_recipe_name, recipeName);
 		
 		Intent adapterIntent = new Intent(context, IngredientsRemoteViewService.class);
 		adapterIntent.putExtra(context.getString(R.string.widget_key_recipe_id), recipeId);
+		adapterIntent.putExtra(context.getString(R.string.widget_key_widget_id), appWidgetId);
 		view.setRemoteAdapter(R.id.widget_list_view_ingredients, adapterIntent);
 	}
 }

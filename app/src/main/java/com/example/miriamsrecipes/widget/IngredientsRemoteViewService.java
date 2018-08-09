@@ -10,7 +10,8 @@ public final class IngredientsRemoteViewService extends RemoteViewsService {
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
 		return new IngredientsRemoteViewsFactory(
 				getApplication(),
-				intent.getIntExtra(getApplicationContext().getString(R.string.widget_key_recipe_id), -1)
+				intent.getIntExtra(getApplicationContext().getString(R.string.widget_key_recipe_id), - 1),
+				intent.getIntExtra(getApplicationContext().getString(R.string.widget_key_widget_id), 0)
 		);
 	}
 }

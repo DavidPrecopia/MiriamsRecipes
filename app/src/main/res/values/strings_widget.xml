@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="widget_key_widget_id">widget_key_widget_id</string>
 	<string name="widget_key_recipe_id">widget_key_recipe_id</string>
 	<string name="widget_key_recipe_name">widget_key_recipe_name</string>
 	

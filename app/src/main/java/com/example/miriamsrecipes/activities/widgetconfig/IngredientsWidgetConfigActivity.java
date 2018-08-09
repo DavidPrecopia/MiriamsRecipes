@@ -10,14 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.RecipeInfo;
 import com.example.miriamsrecipes.activities.main.RecipeInfoAdapter;
 import com.example.miriamsrecipes.databinding.ActivityIngredientsWidgetConfigBinding;
-import com.example.miriamsrecipes.util.SharedPrefWidgetKey;
+import com.example.miriamsrecipes.widget.IngredientsRemoteView;
+import com.example.miriamsrecipes.widget.SharedPrefWidgetKey;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class IngredientsWidgetConfigActivity extends AppCompatActivity
 		implements RecipeInfoAdapter.RecipeInfoItemClickListener {
@@ -56,6 +60,7 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity
 	
 	private void getWidgetId() {
 		widgetId = getIntent().getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+		Timber.d(String.valueOf(widgetId));
 		if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			finish();
 		}
@@ -112,8 +117,9 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity
 	}
 	
 	private void updateWidget() {
+		RemoteViews remoteView = new IngredientsRemoteView().updateWidget(getApplicationContext(), widgetId);
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-//		appWidgetManager.updateAppWidget();
+		appWidgetManager.updateAppWidget(widgetId, remoteView);
 	}
 	
 	private void resultsIntent() {

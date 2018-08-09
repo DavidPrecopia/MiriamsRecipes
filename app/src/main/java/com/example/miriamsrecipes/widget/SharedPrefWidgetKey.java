@@ -1,4 +1,4 @@
-package com.example.miriamsrecipes.util;
+package com.example.miriamsrecipes.widget;
 
 import android.content.Context;
 

@@ -1,11 +1,15 @@
 package com.example.miriamsrecipes.widget;
 
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
+import android.arch.lifecycle.Observer;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.datamodel.IngredientsItem;
+import com.example.miriamsrecipes.datamodel.Recipe;
+import com.example.miriamsrecipes.model.IModelContract;
 import com.example.miriamsrecipes.model.Model;
 
 import java.util.List;
@@ -17,15 +21,25 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 	private final int recipeId;
 	private List<IngredientsItem> ingredients;
 	
-	IngredientsRemoteViewsFactory(Application application, int recipeId) {
+	private final Observer<Recipe> observer;
+	
+	private final IModelContract model;
+	
+	IngredientsRemoteViewsFactory(Application application, int recipeId, int sdfsdfdf) {
 		this.application = application;
 		this.recipeId = recipeId;
+		this.observer = (recipe) -> {
+			ingredients.clear();
+			ingredients.addAll(recipe.getIngredients());
+			AppWidgetManager.getInstance(application).notifyAppWidgetViewDataChanged(sdfsdfdf, R.id.widget_list_view_ingredients);
+		};
+		this.model = Model.getInstance(application);
+		
+		model.getSingleRecipe(recipeId).observeForever(observer);
 	}
 	
 	@Override
 	public void onCreate() {
-		ingredients = Model.getInstance(application)
-				.getSingleRecipe(recipeId).getValue().getIngredients();
 	}
 	
 	
@@ -52,12 +66,11 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 	
 	@Override
 	public void onDataSetChanged() {
-	
 	}
 	
 	@Override
 	public void onDestroy() {
-	
+		model.getSingleRecipe(recipeId).removeObserver(observer);
 	}
 	
 	@Override
