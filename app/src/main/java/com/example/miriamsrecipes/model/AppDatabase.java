@@ -7,7 +7,7 @@ import android.content.Context;
 
 import com.example.miriamsrecipes.datamodel.Recipe;
 
-@Database(entities = {Recipe.class}, version = 1)
+@Database(entities = {Recipe.class}, version = 1, exportSchema = false)
 abstract class AppDatabase extends RoomDatabase {
 	
 	private static AppDatabase database;
