@@ -17,7 +17,7 @@ public final class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdap
 	
 	private final RecipeInfoItemClickListener listener;
 	
-	RecipeInfoAdapter(RecipeInfoItemClickListener listener) {
+	public RecipeInfoAdapter(RecipeInfoItemClickListener listener) {
 		this.recipes = new ArrayList<>();
 		this.listener = listener;
 	}
@@ -35,7 +35,7 @@ public final class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdap
 		holder.bindView();
 	}
 	
-	void replaceData(List<RecipeInfo> newRecipes) {
+	public void replaceData(List<RecipeInfo> newRecipes) {
 		recipes.clear();
 		recipes.addAll(newRecipes);
 		notifyDataSetChanged();
