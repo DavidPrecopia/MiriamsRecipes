@@ -44,13 +44,19 @@ public final class Model implements IModelContract {
 	}
 	
 	
+	/**
+	 * Regarding both get methods below,
+	 *
+	 * @return LiveData because the database might be empty.
+	 */
+	
 	@Override
 	public LiveData<List<RecipeInfo>> getAllRecipes() {
 		return dao.getAllRecipes();
 	}
 	
 	@Override
-	public Single<Recipe> getSingleRecipe(int recipeId) {
+	public LiveData<Recipe> getSingleRecipe(int recipeId) {
 		return dao.getSingleRecipe(recipeId);
 	}
 	

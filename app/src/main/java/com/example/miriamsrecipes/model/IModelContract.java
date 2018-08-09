@@ -7,9 +7,7 @@ import com.example.miriamsrecipes.datamodel.Recipe;
 
 import java.util.List;
 
-import io.reactivex.Single;
-
 public interface IModelContract {
 	LiveData<List<RecipeInfo>> getAllRecipes();
-	Single<Recipe> getSingleRecipe(int recipeId);
+	LiveData<Recipe> getSingleRecipe(int recipeId);
 }

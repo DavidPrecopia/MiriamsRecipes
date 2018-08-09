@@ -22,7 +22,7 @@ final class MainViewModel extends AndroidViewModel {
 	MainViewModel(@NonNull Application application) {
 		super(application);
 		this.recipes = new MutableLiveData<>();
-		this.observer = (recipeInfoList -> this.recipes.setValue(recipeInfoList));
+		this.observer = (this.recipes::setValue);
 		this.model = Model.getInstance(application);
 		observeModel();
 	}
