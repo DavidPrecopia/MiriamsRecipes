@@ -143,10 +143,8 @@ public class SingleStepFragment extends Fragment {
 	private void pickMedia() {
 		if (isValid(step.getVideoURL())) {
 			haveVideo = true;
-		} else if (isValid(step.getThumbnailURL())) {
-			bindPicture();
 		} else {
-			bindPicturePlaceholder();
+			bindPicture();
 		}
 	}
 	
@@ -204,15 +202,8 @@ public class SingleStepFragment extends Fragment {
 		mediaPicture.setVisibility(View.VISIBLE);
 		GlideApp.with(getContext())
 				.load(step.getThumbnailURL())
-				.placeholder(R.drawable.black_placeholder)
+				.placeholder(R.drawable.generic_cooking_picture)
 				.error(R.drawable.generic_cooking_picture)
-				.into(mediaPicture);
-	}
-	
-	private void bindPicturePlaceholder() {
-		mediaPicture.setVisibility(View.VISIBLE);
-		GlideApp.with(getContext())
-				.load(R.drawable.generic_cooking_picture)
 				.into(mediaPicture);
 	}
 	
