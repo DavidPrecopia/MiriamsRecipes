@@ -11,6 +11,7 @@ import android.widget.RemoteViews;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.MainActivity;
 import com.example.miriamsrecipes.activities.widgetconfig.IngredientsWidgetConfigActivity;
+import com.example.miriamsrecipes.util.SharedPrefWidgetKey;
 
 public final class IngredientsWidgetProvider extends AppWidgetProvider {
 	@Override
@@ -25,8 +26,8 @@ public final class IngredientsWidgetProvider extends AppWidgetProvider {
 		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
 		
 		SharedPreferences preferences = context.getSharedPreferences(IngredientsWidgetConfigActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		String recipeName = preferences.getString(WidgetKeys.recipeNameKey(context, appWidgetId), null);
-		int recipeId = preferences.getInt(WidgetKeys.recipeIdKey(context, appWidgetId), -1);
+		String recipeName = preferences.getString(SharedPrefWidgetKey.recipeNameKey(context, appWidgetId), null);
+		int recipeId = preferences.getInt(SharedPrefWidgetKey.recipeIdKey(context, appWidgetId), -1);
 		
 		setPendingIntent(context, view);
 		setUpView(context, view, recipeId, recipeName);
