@@ -4,19 +4,14 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.database.SQLException;
 
-import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.RecipeInfo;
 import com.example.miriamsrecipes.datamodel.Recipe;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.miriamsrecipes.network.INetworkContract;
+import com.example.miriamsrecipes.network.Network;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import io.reactivex.MaybeObserver;
-import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -26,7 +21,7 @@ public final class Model implements IModelContract {
 	
 	private final RecipeDao dao;
 	
-	private final InputStream rawJson;
+	private final INetworkContract network;
 	
 	private static Model model;
 	
@@ -39,7 +34,7 @@ public final class Model implements IModelContract {
 	
 	private Model(Application application) {
 		dao = AppDatabase.getInstance(application).getRecipeDao();
-		rawJson = application.getResources().openRawResource(R.raw.udacity_miriam_recipes);
+		network = Network.getInstance(application);
 		populateDatabase();
 	}
 	
@@ -93,33 +88,27 @@ public final class Model implements IModelContract {
 	
 	
 	private void insertRecipes() {
-		Single.fromCallable(() -> dao.popularDatabase(parseJson()))
+		network.getRecipes()
 				.subscribeOn(Schedulers.io())
 				.subscribe(populateObserver());
 	}
 	
-	private SingleObserver<List<Long>> populateObserver() {
-		return new SingleObserver<List<Long>>() {
+	private SingleObserver<List<Recipe>> populateObserver() {
+		return new SingleObserver<List<Recipe>>() {
 			@Override
 			public void onSubscribe(Disposable d) {
-			
+				Timber.d("onSub");
 			}
 			
 			@Override
-			public void onSuccess(List<Long> longs) {
-				Timber.i("Successfully populated database.");
+			public void onSuccess(List<Recipe> recipeList) {
+				dao.popularDatabase(recipeList);
 			}
 			
 			@Override
 			public void onError(Throwable e) {
-				throw new SQLException("Error populating the database");
+				Timber.e(e);
 			}
 		};
-	}
-	
-	private List<Recipe> parseJson() {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(rawJson));
-		return new Gson().fromJson(reader, new TypeToken<List<Recipe>>() {
-		}.getType());
 	}
 }
