@@ -12,6 +12,6 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_ingredients_widget_configuration);
+		setContentView(R.layout.activity_ingredients_widget_config);
 	}
 }
