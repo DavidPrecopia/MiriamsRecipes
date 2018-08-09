@@ -5,8 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.ListItemRecipeBinding;
+import com.example.miriamsrecipes.util.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +60,22 @@ public final class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdap
 			binding.getRoot().setOnClickListener(this);
 		}
 		
+		
 		private void bindView() {
 			binding.setRecipe(recipes.get(getAdapterPosition()));
+			bindImage();
 			binding.executePendingBindings();
 		}
+		
+		private void bindImage() {
+			ImageView imageView = binding.ivRecipePicture;
+			GlideApp.with(imageView)
+					.load(recipes.get(getAdapterPosition()).getImage())
+					.error(R.drawable.generic_cooking_picture)
+					.placeholder(R.drawable.generic_cooking_picture)
+					.into(imageView);
+		}
+		
 		
 		@Override
 		public void onClick(View view) {

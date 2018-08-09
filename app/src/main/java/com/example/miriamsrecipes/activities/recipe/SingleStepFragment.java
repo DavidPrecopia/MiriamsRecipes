@@ -52,7 +52,6 @@ public class SingleStepFragment extends Fragment {
 	private FragmentSingleStepBinding binding;
 	
 	private PlayerView playerView;
-	private ImageView mediaPicture;
 	
 	private SimpleExoPlayer exoPlayer;
 	private long playbackPosition;
@@ -123,7 +122,7 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void init() {
-		getMediaReferences();
+		playerView = binding.videoPlayer;
 		pickMedia();
 		if (orientationPortrait() || masterDetailLayout) {
 			bindDescription();
@@ -131,12 +130,6 @@ public class SingleStepFragment extends Fragment {
 				setUpStepNavigation();
 			}
 		}
-	}
-	
-	
-	private void getMediaReferences() {
-		playerView = binding.videoPlayer;
-		mediaPicture = binding.ivPicture;
 	}
 	
 	
@@ -199,6 +192,7 @@ public class SingleStepFragment extends Fragment {
 	
 	
 	private void bindPicture() {
+		ImageView mediaPicture = binding.ivPicture;
 		mediaPicture.setVisibility(View.VISIBLE);
 		GlideApp.with(getContext())
 				.load(step.getThumbnailURL())

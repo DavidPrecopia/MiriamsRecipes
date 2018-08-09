@@ -3,4 +3,7 @@
 	<!--RecipeActivity-->
 	<string name="fragments_backstack_tag">backstack_tag</string>
 	<string name="error_unknown_layout_state">Current layout is unknown</string>
+	
+	<!--list_item_recipe-->
+	<string name="description_iv_picture_of_recipe">Picture of recipe</string>
 </resources>
