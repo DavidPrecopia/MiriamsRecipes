@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 		setUpToolbar();
 		setUpViewModel();
 		setUpRecyclerView();
-		observeRecipes();
+		observeViewModel();
 	}
 	
 	private void setUpToolbar() {
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 		viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
 	}
 	
-	private void observeRecipes() {
+	private void observeViewModel() {
 		viewModel.getRecipes().observe(this, recipes -> {
 			recyclerViewAdapter.replaceData(recipes);
 			hideLoading();
@@ -106,9 +106,12 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 	
 	
 	@Override
-	public void recipeInfoClick(int recipeId) {
+	public void recipeInfoClick(int listPosition) {
 		Intent intent = new Intent(this, RecipeActivity.class);
-		intent.putExtra(RecipeActivity.class.getSimpleName(), recipeId);
+		intent.putExtra(
+				RecipeActivity.class.getSimpleName(),
+				viewModel.getRecipes().getValue().get(listPosition).getId()
+		);
 		startActivity(intent);
 	}
 }

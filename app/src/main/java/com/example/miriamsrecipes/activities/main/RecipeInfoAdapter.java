@@ -65,13 +65,13 @@ public final class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdap
 		@Override
 		public void onClick(View view) {
 			listener.recipeInfoClick(
-					recipes.get(getAdapterPosition()).getId()
+					getAdapterPosition()
 			);
 		}
 	}
 	
 	
 	public interface RecipeInfoItemClickListener {
-		void recipeInfoClick(int recipeId);
+		void recipeInfoClick(int listPosition);
 	}
 }
