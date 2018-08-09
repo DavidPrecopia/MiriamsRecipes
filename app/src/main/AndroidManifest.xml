@@ -15,7 +15,6 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme"
 		tools:ignore="GoogleAppIndexingWarning">
-		
 		<activity
 			android:name=".activities.main.MainActivity"
 			android:launchMode="singleTop">
@@ -25,7 +24,6 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		
 		<activity
 			android:name=".activities.recipe.RecipeActivity"
 			android:parentActivityName=".activities.main.MainActivity" />
@@ -34,6 +32,7 @@
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
+			
 			<meta-data
 				android:name="android.appwidget.provider"
 				android:resource="@xml/ingredients_appwidget_info" />
@@ -42,5 +41,8 @@
 		<service
 			android:name=".widget.WidgetRemoteViewService"
 			android:permission="android.permission.BIND_REMOTEVIEWS" />
+		
+		<activity android:name=".activities.widgetconfig.IngredientsWidgetConfigActivity"></activity>
 	</application>
+
 </manifest>
