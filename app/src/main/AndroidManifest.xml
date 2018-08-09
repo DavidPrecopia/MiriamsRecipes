@@ -28,7 +28,7 @@
 			android:name=".activities.recipe.RecipeActivity"
 			android:parentActivityName=".activities.main.MainActivity" />
 		
-		<receiver android:name=".widget.IngredientsWidget">
+		<receiver android:name=".widget.IngredientsWidgetProvider">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>

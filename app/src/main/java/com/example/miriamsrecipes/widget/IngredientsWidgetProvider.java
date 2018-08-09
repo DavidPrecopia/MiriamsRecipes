@@ -6,14 +6,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.main.MainActivity;
 import com.example.miriamsrecipes.activities.widgetconfig.IngredientsWidgetConfigActivity;
 
-public final class IngredientsWidget extends AppWidgetProvider {
+public final class IngredientsWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		for (int appWidgetId : appWidgetIds) {
@@ -22,11 +21,10 @@ public final class IngredientsWidget extends AppWidgetProvider {
 		}
 	}
 	
-	@NonNull
 	private RemoteViews updateWidget(Context context, int appWidgetId) {
 		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
 		
-		SharedPreferences preferences = context.getSharedPreferences(IngredientsWidgetConfigActivity.SHARED_PERF_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(IngredientsWidgetConfigActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 		String recipeName = preferences.getString(WidgetKeys.recipeNameKey(context, appWidgetId), null);
 		int recipeId = preferences.getInt(WidgetKeys.recipeIdKey(context, appWidgetId), -1);
 		
