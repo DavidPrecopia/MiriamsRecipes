@@ -39,7 +39,7 @@
 		</receiver>
 		
 		<service
-			android:name=".widget.WidgetRemoteViewService"
+			android:name=".widget.IngredientsRemoteViewService"
 			android:permission="android.permission.BIND_REMOTEVIEWS" />
 		
 		<activity android:name=".activities.widgetconfig.IngredientsWidgetConfigActivity">

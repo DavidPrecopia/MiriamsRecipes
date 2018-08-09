@@ -10,14 +10,14 @@ import com.example.miriamsrecipes.model.Model;
 
 import java.util.List;
 
-final class MyRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	
 	private final Application application;
 	
 	private final int recipeId;
 	private List<IngredientsItem> ingredients;
 	
-	MyRemoteViewsFactory(Application application, int recipeId) {
+	IngredientsRemoteViewsFactory(Application application, int recipeId) {
 		this.application = application;
 		this.recipeId = recipeId;
 	}
