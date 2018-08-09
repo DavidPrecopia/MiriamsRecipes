@@ -17,18 +17,18 @@ public final class IngredientsWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		for (int appWidgetId : appWidgetIds) {
-			RemoteViews view = updateWidget(context);
+			RemoteViews view = updateWidget(context, appWidgetId);
 			appWidgetManager.updateAppWidget(appWidgetId, view);
 		}
 	}
 	
 	@NonNull
-	private RemoteViews updateWidget(Context context) {
+	private RemoteViews updateWidget(Context context, int appWidgetId) {
 		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_ingredients);
 		
 		SharedPreferences preferences = context.getSharedPreferences(IngredientsWidgetConfigActivity.SHARED_PERF_NAME, Context.MODE_PRIVATE);
-		String recipeName = preferences.getString(context.getString(R.string.widget_key_recipe_name), null);
-		int recipeId = preferences.getInt(context.getString(R.string.widget_key_recipe_id), -1);
+		String recipeName = preferences.getString(WidgetKeys.recipeNameKey(context, appWidgetId), null);
+		int recipeId = preferences.getInt(WidgetKeys.recipeIdKey(context, appWidgetId), -1);
 		
 		setPendingIntent(context, view);
 		setUpView(context, view, recipeId, recipeName);
