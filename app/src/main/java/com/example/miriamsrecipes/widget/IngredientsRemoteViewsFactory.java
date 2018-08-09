@@ -35,7 +35,11 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 		this.model = Model.getInstance(application);
 		appWidgetManager = AppWidgetManager.getInstance(application);
 		
-		this.observer = (recipe) -> {
+		this.observer = getObserver(widgetId);
+	}
+	
+	private Observer<Recipe> getObserver(int widgetId) {
+		return (recipe) -> {
 			ingredients.clear();
 			ingredients.addAll(recipe.getIngredients());
 			appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.widget_list_view_ingredients);
