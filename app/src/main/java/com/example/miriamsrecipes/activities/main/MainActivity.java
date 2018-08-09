@@ -4,29 +4,24 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.recipe.RecipeActivity;
 import com.example.miriamsrecipes.databinding.ActivityMainBinding;
-import com.example.miriamsrecipes.databinding.ListItemRecipeBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter.RecipeInfoItemClickListener {
 	
 	private MainViewModel viewModel;
 	private ActivityMainBinding binding;
 	
-	private RecipeAdapter recyclerViewAdapter;
+	private RecipeInfoAdapter recyclerViewAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 		init();
 	}
 	
-	
 	private void init() {
 		displayLoading();
 		setUpToolbar();
@@ -43,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 		setUpRecyclerView();
 		observeRecipes();
 	}
-	
 	
 	private void setUpToolbar() {
 		setSupportActionBar(binding.appBar.toolbar);
@@ -67,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(getLayoutManager());
 		recyclerView.setHasFixedSize(true);
 		
-		recyclerViewAdapter = new RecipeAdapter();
+		recyclerViewAdapter = new RecipeInfoAdapter(this);
 		restoreAdapterData();
 		recyclerView.setAdapter(recyclerViewAdapter);
 	}
@@ -112,67 +105,10 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	
-	private void openSpecificRecipe(final int recipeId) {
+	@Override
+	public void recipeInfoClick(int recipeId) {
 		Intent intent = new Intent(this, RecipeActivity.class);
 		intent.putExtra(RecipeActivity.class.getSimpleName(), recipeId);
 		startActivity(intent);
-	}
-	
-	
-	final class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
-		
-		private final List<RecipeInfo> recipes;
-		
-		RecipeAdapter() {
-			this.recipes = new ArrayList<>();
-		}
-		
-		@NonNull
-		@Override
-		public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-			return new RecipeViewHolder(
-					ListItemRecipeBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false)
-			);
-		}
-		
-		@Override
-		public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-			holder.bindView();
-		}
-		
-		void replaceData(List<RecipeInfo> newRecipes) {
-			recipes.clear();
-			recipes.addAll(newRecipes);
-			notifyDataSetChanged();
-		}
-		
-		@Override
-		public int getItemCount() {
-			return recipes.size();
-		}
-		
-		
-		final class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-			
-			private final ListItemRecipeBinding binding;
-			
-			RecipeViewHolder(ListItemRecipeBinding binding) {
-				super(binding.getRoot());
-				this.binding = binding;
-				binding.getRoot().setOnClickListener(this);
-			}
-			
-			private void bindView() {
-				binding.setRecipe(recipes.get(getAdapterPosition()));
-				binding.executePendingBindings();
-			}
-			
-			@Override
-			public void onClick(View view) {
-				openSpecificRecipe(
-						recipes.get(getAdapterPosition()).getId()
-				);
-			}
-		}
 	}
 }
