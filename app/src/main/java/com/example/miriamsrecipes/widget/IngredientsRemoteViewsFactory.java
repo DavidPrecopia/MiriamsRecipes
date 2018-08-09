@@ -22,6 +22,7 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 	private final int recipeId;
 	private List<IngredientsItem> ingredients;
 	
+	private final AppWidgetManager appWidgetManager;
 	private final IModelContract model;
 	private final Observer<Recipe> observer;
 	
@@ -31,12 +32,14 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 		this.recipeId = recipeId;
 		this.ingredients = new ArrayList<>();
 		
+		this.model = Model.getInstance(application);
+		appWidgetManager = AppWidgetManager.getInstance(application);
+		
 		this.observer = (recipe) -> {
 			ingredients.clear();
 			ingredients.addAll(recipe.getIngredients());
-			AppWidgetManager.getInstance(application).notifyAppWidgetViewDataChanged(widgetId, R.id.widget_list_view_ingredients);
+			appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.widget_list_view_ingredients);
 		};
-		this.model = Model.getInstance(application);
 	}
 	
 	@Override
@@ -67,12 +70,12 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 	
 	
 	@Override
-	public void onDataSetChanged() {
+	public void onDestroy() {
 	}
 	
+	
 	@Override
-	public void onDestroy() {
-		model.getSingleRecipe(recipeId).removeObserver(observer);
+	public void onDataSetChanged() {
 	}
 	
 	@Override
