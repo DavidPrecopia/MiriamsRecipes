@@ -7,15 +7,18 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
 
+import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.model.IModelContract;
 import com.example.miriamsrecipes.model.Model;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 final class MainViewModel extends AndroidViewModel {
 	
-	private MutableLiveData<List<RecipeInfo>> recipes;
-	private Observer<List<RecipeInfo>> observer;
+	private MutableLiveData<List<Recipe>> recipes;
+	private final Observer<List<Recipe>> observer;
 	
 	private final IModelContract model;
 	
@@ -27,9 +30,10 @@ final class MainViewModel extends AndroidViewModel {
 		observeModel();
 	}
 	
-	private Observer<List<RecipeInfo>> getObserver() {
+	private Observer<List<Recipe>> getObserver() {
 		return recipeInfoList -> {
-			if (recipeInfoList.isEmpty()) {
+			if (recipeInfoList == null || recipeInfoList.isEmpty()) {
+				Timber.i("getObserver - recipeInfoList is null or empty.");
 				return;
 			}
 			recipes.setValue(recipeInfoList);
@@ -37,11 +41,11 @@ final class MainViewModel extends AndroidViewModel {
 	}
 	
 	private void observeModel() {
-		model.getAllRecipes().observeForever(observer);
+		model.observeAllRecipes().observeForever(observer);
 	}
 	
 	
-	LiveData<List<RecipeInfo>> getRecipes() {
+	LiveData<List<Recipe>> getRecipes() {
 		return recipes;
 	}
 	
@@ -49,6 +53,6 @@ final class MainViewModel extends AndroidViewModel {
 	@Override
 	protected void onCleared() {
 		super.onCleared();
-		model.getAllRecipes().removeObserver(observer);
+		model.observeAllRecipes().removeObserver(observer);
 	}
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.ListItemRecipeBinding;
+import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.util.GlideApp;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public final class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.RecipeViewHolder> {
 	
-	private final List<RecipeInfo> recipes;
+	private final List<Recipe> recipes;
 	
 	private final RecipeInfoItemClickListener listener;
 	
@@ -38,7 +39,7 @@ public final class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdap
 		holder.bindView();
 	}
 	
-	public void replaceData(List<RecipeInfo> newRecipes) {
+	public void replaceData(List<Recipe> newRecipes) {
 		recipes.clear();
 		recipes.addAll(newRecipes);
 		notifyDataSetChanged();

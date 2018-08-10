@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.miriamsrecipes.R;
-import com.example.miriamsrecipes.activities.main.RecipeInfo;
 import com.example.miriamsrecipes.activities.main.RecipeInfoAdapter;
 import com.example.miriamsrecipes.databinding.ActivityIngredientsWidgetConfigBinding;
+import com.example.miriamsrecipes.datamodel.Recipe;
 import com.example.miriamsrecipes.widget.IngredientsRemoteView;
 import com.example.miriamsrecipes.widget.SharedPrefWidgetKey;
 
@@ -87,7 +87,7 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity
 	 * restores scroll state by RecyclerView itself.
 	 */
 	private void restoreAdapterData() {
-		List<RecipeInfo> recipeList = viewModel.getRecipes().getValue();
+		List<Recipe> recipeList = viewModel.getRecipes().getValue();
 		if (recipeList == null || recipeList.isEmpty()) {
 			return;
 		}
@@ -102,8 +102,8 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity
 		);
 	}
 	
-	private void saveSelectedRecipe(RecipeInfo recipeInfo) {
-		saveValuesToSharedPrefs(recipeInfo.getId(), recipeInfo.getName());
+	private void saveSelectedRecipe(Recipe recipe) {
+		saveValuesToSharedPrefs(recipe.getId(), recipe.getName());
 		updateWidget();
 		resultsIntent();
 		finish();

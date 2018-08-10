@@ -13,6 +13,7 @@ import android.view.View;
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.activities.recipe.RecipeActivity;
 import com.example.miriamsrecipes.databinding.ActivityMainBinding;
+import com.example.miriamsrecipes.datamodel.Recipe;
 
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 	 * restores scroll state by RecyclerView itself.
 	 */
 	private void restoreAdapterData() {
-		List<RecipeInfo> recipeList = viewModel.getRecipes().getValue();
+		List<Recipe> recipeList = viewModel.getRecipes().getValue();
 		if (recipeList == null || recipeList.isEmpty()) {
 			return;
 		}
