@@ -25,7 +25,7 @@ import timber.log.Timber;
 
 public class StepsFragment extends Fragment {
 	
-	private static final String RECIPE_KEY = "recipe_key";
+	private static final String RECIPE_ID_KEY = "recipe_id_key";
 	
 	private FragmentStepsBinding binding;
 	private RecipeViewModel viewModel;
@@ -37,22 +37,36 @@ public class StepsFragment extends Fragment {
 	public StepsFragment() {
 	}
 	
-	public static StepsFragment newInstance() {
-		return new StepsFragment();
+	public static StepsFragment newInstance(int recipeId) {
+		StepsFragment fragment = new StepsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(RECIPE_ID_KEY, recipeId);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 	
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		viewModel = ViewModelProviders.of(getActivity()).get(RecipeViewModel.class);
+		int recipeId = getArguments().getInt(RECIPE_ID_KEY);
+		ViewModelFactory factory = new ViewModelFactory(getActivity().getApplication(), recipeId);
+		viewModel = ViewModelProviders.of(getActivity(), factory).get(RecipeViewModel.class);
 	}
 	
 	
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_steps, container, false);
-		init();
+		progressBarVisibility(View.VISIBLE);
+		observeViewModel();
 		return binding.getRoot();
+	}
+	
+	private void observeViewModel() {
+		viewModel.getRecipe().observe(this, recipe -> {
+			init();
+			progressBarVisibility(View.GONE);
+		});
 	}
 	
 	private void init() {
@@ -92,6 +106,11 @@ public class StepsFragment extends Fragment {
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(new StepsAdapter(viewModel.getRecipe().getValue().getSteps()));
+	}
+	
+	
+	private void progressBarVisibility(int visibility) {
+		binding.progressBar.setVisibility(visibility);
 	}
 	
 	

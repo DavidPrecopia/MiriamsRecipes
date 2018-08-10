@@ -44,6 +44,7 @@ import timber.log.Timber;
 
 public class SingleStepFragment extends Fragment {
 	
+	private static final String RECIPE_ID_KEY = "recipe_id_key";
 	private static final String STEP_ID_KEY = "step_key";
 	private static final String MASTER_DETAIL_LAYOUT_KEY = "master_detail_layout_key";
 	
@@ -69,9 +70,10 @@ public class SingleStepFragment extends Fragment {
 	public SingleStepFragment() {
 	}
 	
-	public static SingleStepFragment newInstance(int stepId, boolean dualPane) {
+	public static SingleStepFragment newInstance(int stepId, boolean dualPane, int recipeId) {
 		SingleStepFragment fragment = new SingleStepFragment();
 		Bundle bundle = new Bundle();
+		bundle.putInt(RECIPE_ID_KEY, recipeId);
 		bundle.putInt(STEP_ID_KEY, stepId);
 		bundle.putBoolean(MASTER_DETAIL_LAYOUT_KEY, dualPane);
 		fragment.setArguments(bundle);
@@ -82,12 +84,17 @@ public class SingleStepFragment extends Fragment {
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		masterDetailLayout = getArguments().getBoolean(MASTER_DETAIL_LAYOUT_KEY);
+		setUpViewModel();
 		getStep();
 	}
 	
+	private void setUpViewModel() {
+		int recipeId = getArguments().getInt(RECIPE_ID_KEY);
+		ViewModelFactory factory = new ViewModelFactory(getActivity().getApplication(), recipeId);
+		viewModel = ViewModelProviders.of(getActivity(), factory).get(RecipeViewModel.class);
+	}
+	
 	private void getStep() {
-		viewModel = ViewModelProviders.of(getActivity()).get(RecipeViewModel.class);
-		
 		int stepId = getArguments().getInt(STEP_ID_KEY);
 		step = viewModel.getRecipe().getValue().getSteps().get(stepId);
 	}
@@ -95,7 +102,8 @@ public class SingleStepFragment extends Fragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_single_step, container, false);
-		init();
+		progressBarVisibility(View.VISIBLE);
+		observeViewModel();
 		restorePlayerState(savedInstanceState);
 		return binding.getRoot();
 	}
@@ -111,7 +119,6 @@ public class SingleStepFragment extends Fragment {
 		}
 	}
 	
-	
 	private void restorePlayerState(Bundle savedInstanceState) {
 		if (savedInstanceState == null) {
 			return;
@@ -120,6 +127,13 @@ public class SingleStepFragment extends Fragment {
 		playWhenReady = savedInstanceState.getBoolean(getString(R.string.key_play_when_ready));
 	}
 	
+	
+	private void observeViewModel() {
+		viewModel.getRecipe().observe(this, recipe -> {
+			init();
+			progressBarVisibility(View.GONE);
+		});
+	}
 	
 	private void init() {
 		playerView = binding.videoPlayer;
@@ -250,6 +264,11 @@ public class SingleStepFragment extends Fragment {
 	
 	private void infoToast(String message) {
 		Toasty.info(getContext(), message, Toast.LENGTH_SHORT).show();
+	}
+	
+	
+	private void progressBarVisibility(int visibility) {
+		binding.progressBar.setVisibility(visibility);
 	}
 	
 	

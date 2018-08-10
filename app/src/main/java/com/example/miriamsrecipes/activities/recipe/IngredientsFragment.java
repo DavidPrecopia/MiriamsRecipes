@@ -23,6 +23,7 @@ import java.util.List;
 
 public class IngredientsFragment extends Fragment {
 	
+	private static final String RECIPE_ID_KEY = "recipe_id_key";
 	private static final String MASTER_DETAIL_LAYOUT_KEY = "master_detail_layout_key";
 	
 	private RecipeViewModel viewModel;
@@ -34,9 +35,10 @@ public class IngredientsFragment extends Fragment {
 	public IngredientsFragment() {
 	}
 	
-	public static IngredientsFragment newInstance(boolean dualPane) {
+	public static IngredientsFragment newInstance(boolean dualPane, int recipeId) {
 		IngredientsFragment fragment = new IngredientsFragment();
 		Bundle bundle = new Bundle();
+		bundle.putInt(RECIPE_ID_KEY, recipeId);
 		bundle.putBoolean(MASTER_DETAIL_LAYOUT_KEY, dualPane);
 		fragment.setArguments(bundle);
 		return fragment;
@@ -47,15 +49,30 @@ public class IngredientsFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		masterDetailLayout = getArguments().getBoolean(MASTER_DETAIL_LAYOUT_KEY);
-		viewModel = ViewModelProviders.of(getActivity()).get(RecipeViewModel.class);
+		int recipeId = getArguments().getInt(RECIPE_ID_KEY);
+		ViewModelFactory factory = new ViewModelFactory(getActivity().getApplication(), recipeId);
+		viewModel = ViewModelProviders.of(getActivity(), factory).get(RecipeViewModel.class);
 	}
 	
 	
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ingredients, container, false);
-		init();
+		progressBarVisibility(View.VISIBLE);
+		observeViewModel();
 		return binding.getRoot();
+	}
+	
+	private void progressBarVisibility(int visibility) {
+		binding.progressBar.setVisibility(visibility);
+	}
+	
+	
+	private void observeViewModel() {
+		viewModel.getRecipe().observe(this, recipe -> {
+			init();
+			progressBarVisibility(View.GONE);
+		});
 	}
 	
 	private void init() {

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.example.miriamsrecipes.R;
 import com.example.miriamsrecipes.databinding.ActivityRecipeBinding;
@@ -16,10 +15,11 @@ public class RecipeActivity extends AppCompatActivity
 		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
 		SingleStepFragment.ChangeStepListener {
 	
-	private RecipeViewModel viewModel;
 	private ActivityRecipeBinding binding;
 	
 	private FragmentManager fragmentManager;
+	
+	private int recipeId;
 	
 	private boolean masterDetailLayout;
 	private boolean newActivity;
@@ -32,24 +32,18 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void init(boolean newActivity) {
-		progressBarVisibility(View.VISIBLE);
 		setUpViewModel();
 		initializeFields(newActivity);
-		observeViewModel();
+		setUpLayout();
 	}
 	
-	/**
-	 * Creating the ViewModel in the Activity fixes a crash caused
-	 * by rotating the device when the app is in the background.
-	 * This issue is similar to a known issue with ViewModel,
-	 * https://issuetracker.google.com/issues/72690424#comment10
-	 */
 	private void setUpViewModel() {
+		recipeId = getIntent().getIntExtra(RecipeActivity.class.getSimpleName(), 0);
 		ViewModelFactory factory = new ViewModelFactory(
 				getApplication(),
-				getIntent().getIntExtra(RecipeActivity.class.getSimpleName(), 0)
+				recipeId
 		);
-		viewModel = ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
+		ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
 	}
 	
 	private void initializeFields(boolean newActivity) {
@@ -58,31 +52,22 @@ public class RecipeActivity extends AppCompatActivity
 		this.newActivity = newActivity;
 	}
 	
-	private void observeViewModel() {
-		viewModel.getRecipe().observe(this, recipe -> {
-			setUpLayout();
-			progressBarVisibility(View.GONE);
-		});
-	}
-	
 	
 	private void setUpLayout() {
 		if (! masterDetailLayout && newActivity) {
-			initializeFragment(StepsFragment.newInstance(), binding.fragmentHolder.getId());
+			initializeFragment(StepsFragment.newInstance(recipeId), binding.fragmentHolder.getId());
 		} else if (masterDetailLayout) {
 			initializeDualPaneFragments();
-		} else {
-			throw new IllegalStateException(getString(R.string.error_unknown_layout_state));
 		}
 	}
 	
 	private void initializeDualPaneFragments() {
 		initializeFragment(
-				StepsFragment.newInstance(),
+				StepsFragment.newInstance(recipeId),
 				binding.masterHolder.getId()
 		);
 		initializeFragment(
-				IngredientsFragment.newInstance(masterDetailLayout),
+				IngredientsFragment.newInstance(masterDetailLayout, recipeId),
 				binding.detailHolder.getId()
 		);
 	}
@@ -97,26 +82,26 @@ public class RecipeActivity extends AppCompatActivity
 	
 	@Override
 	public void onIngredientClick() {
-		IngredientsFragment fragment = IngredientsFragment.newInstance(masterDetailLayout);
+		IngredientsFragment fragment = IngredientsFragment.newInstance(masterDetailLayout, recipeId);
 		checkIfDualPane(fragment);
 	}
 	
 	@Override
 	public void onStepClick(int stepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId, masterDetailLayout);
+		SingleStepFragment fragment = SingleStepFragment.newInstance(stepId, masterDetailLayout, recipeId);
 		checkIfDualPane(fragment);
 	}
 	
 	
 	@Override
 	public void onPrevious(int currentStepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId - 1), masterDetailLayout);
+		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId - 1), masterDetailLayout, recipeId);
 		checkIfDualPaneChangeStep(fragment);
 	}
 	
 	@Override
 	public void onNext(int currentStepId) {
-		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId + 1), masterDetailLayout);
+		SingleStepFragment fragment = SingleStepFragment.newInstance((currentStepId + 1), masterDetailLayout, recipeId);
 		checkIfDualPaneChangeStep(fragment);
 	}
 	
@@ -159,11 +144,6 @@ public class RecipeActivity extends AppCompatActivity
 				.addToBackStack(getString(R.string.fragments_backstack_tag))
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.commit();
-	}
-	
-	
-	private void progressBarVisibility(int visibility) {
-		binding.progressBar.setVisibility(visibility);
 	}
 	
 	
