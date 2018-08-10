@@ -1,6 +1,7 @@
 package com.example.miriamsrecipes.widget;
 
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ public final class IngredientsRemoteView {
 		int recipeId = getRecipeId(context, appWidgetId, preferences);
 		
 		setPendingIntent(context, view, recipeId);
+		setConfigPendingIntent(context, view, appWidgetId);
 		setUpView(
 				context,
 				view,
@@ -51,9 +53,20 @@ public final class IngredientsRemoteView {
 	private void setPendingIntent(Context context, RemoteViews view, int recipeId) {
 		Intent intent = new Intent(context, RecipeActivity.class);
 		intent.putExtra(RecipeActivity.class.getSimpleName(), recipeId);
+		
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		view.setOnClickPendingIntent(R.id.widget_root_layout, pendingIntent);
 	}
+	
+	private void setConfigPendingIntent(Context context, RemoteViews view, int appWidgetId) {
+		Intent configIntent = new Intent(context, IngredientsWidgetConfigActivity.class);
+		configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		configIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE + Integer.toString(appWidgetId));
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
+		view.setOnClickPendingIntent(R.id.widget_iv_settings, pendingIntent);
+	}
+	
 	
 	private void setUpView(Context context, RemoteViews view, int recipeId, String recipeName, int appWidgetId) {
 		view.setTextViewText(R.id.tv_recipe_name, recipeName);
