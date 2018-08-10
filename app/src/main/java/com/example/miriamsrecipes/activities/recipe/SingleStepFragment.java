@@ -113,10 +113,14 @@ public class SingleStepFragment extends Fragment {
 		super.onStart();
 		// Initializing ExoPlayer here per their tutorial.
 		if (haveVideo && exoPlayer == null) {
-			setUpVideoPlayer();
-			exoPlayer.setPlayWhenReady(playWhenReady);
-			exoPlayer.seekTo(0, playbackPosition);
+			initializeExoPlayer();
 		}
+	}
+	
+	private void initializeExoPlayer() {
+		setUpVideoPlayer();
+		exoPlayer.setPlayWhenReady(playWhenReady);
+		exoPlayer.seekTo(0, playbackPosition);
 	}
 	
 	private void restorePlayerState(Bundle savedInstanceState) {
@@ -150,6 +154,7 @@ public class SingleStepFragment extends Fragment {
 	private void pickMedia() {
 		if (isValid(step.getVideoURL())) {
 			haveVideo = true;
+			initializeExoPlayer();
 		} else {
 			bindPicture();
 		}

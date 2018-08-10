@@ -55,7 +55,13 @@ public final class Model implements IModelContract, Callback<List<Recipe>> {
 		dao.checkDatabase()
 				.subscribeOn(Schedulers.io())
 				.doOnError((onError) -> {throw new SQLException("Error checking the database.\n%s", onError);})
-				.doOnSuccess((recipe -> allRecipesList.postValue(dao.getAllRecipes().getValue())))
+				.doOnSuccess((recipeList -> {
+					if (recipeList.isEmpty()) {
+						insertRecipes();
+					} else {
+						allRecipesList.postValue(recipeList);
+					}
+				}))
 				.doOnComplete(this::insertRecipes)
 				.subscribe();
 	}
