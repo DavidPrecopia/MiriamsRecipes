@@ -55,7 +55,7 @@ public final class IngredientsRemoteView {
 		intent.putExtra(RecipeActivity.class.getSimpleName(), recipeId);
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		view.setOnClickPendingIntent(R.id.widget_root_layout, pendingIntent);
+		view.setOnClickPendingIntent(R.id.widget_tv_recipe_name, pendingIntent);
 	}
 	
 	private void setConfigPendingIntent(Context context, RemoteViews view, int appWidgetId) {
@@ -69,7 +69,7 @@ public final class IngredientsRemoteView {
 	
 	
 	private void setUpView(Context context, RemoteViews view, int recipeId, String recipeName, int appWidgetId) {
-		view.setTextViewText(R.id.tv_recipe_name, recipeName);
+		view.setTextViewText(R.id.widget_tv_recipe_name, recipeName);
 		
 		Intent adapterIntent = new Intent(context, IngredientsRemoteViewService.class);
 		adapterIntent.putExtra(context.getString(R.string.widget_key_recipe_id), recipeId);
