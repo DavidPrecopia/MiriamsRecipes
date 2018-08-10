@@ -2,7 +2,7 @@
 
 Showcase recipes by Miriam.
 
-This is the fourth project for Udacity's Android Devdloper Nandegree.
+This is the fourth project for Udacity's Android Developer Nanodegree.
 
 # Resources
 
