@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 	}
 	
 	private void init() {
-		displayLoading();
+		progressBarVisibility(View.VISIBLE);
 		setUpToolbar();
 		setUpViewModel();
 		setUpRecyclerView();
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 	private void observeViewModel() {
 		viewModel.getRecipes().observe(this, recipes -> {
 			recyclerViewAdapter.replaceData(recipes);
-			hideLoading();
+			progressBarVisibility(View.GONE);
 		});
 	}
 	
@@ -86,20 +86,6 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 		recyclerViewAdapter.replaceData(recipeList);
 	}
 	
-	
-	private void displayLoading() {
-		recyclerViewVisibility(View.INVISIBLE);
-		progressBarVisibility(View.VISIBLE);
-	}
-	
-	private void hideLoading() {
-		recyclerViewVisibility(View.VISIBLE);
-		progressBarVisibility(View.GONE);
-	}
-	
-	private void recyclerViewVisibility(int visibility) {
-		binding.recyclerView.setVisibility(visibility);
-	}
 	
 	private void progressBarVisibility(int visibility) {
 		binding.progressBar.setVisibility(visibility);

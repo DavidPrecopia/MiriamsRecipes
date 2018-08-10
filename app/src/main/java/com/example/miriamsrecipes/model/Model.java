@@ -20,7 +20,7 @@ import timber.log.Timber;
 
 public final class Model implements IModelContract, Callback<List<Recipe>> {
 	
-	MutableLiveData<List<Recipe>> allRecipesList;
+	private MutableLiveData<List<Recipe>> allRecipesList;
 	
 	private final RecipeDao dao;
 	
