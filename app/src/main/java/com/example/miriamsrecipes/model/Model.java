@@ -42,7 +42,7 @@ public final class Model implements IModelContract {
 	/**
 	 * Regarding both get methods below,
 	 *
-	 * @return LiveData because the database might be empty.
+	 * @return LiveData (instead of Single) because the database might be empty.
 	 */
 	
 	@Override
