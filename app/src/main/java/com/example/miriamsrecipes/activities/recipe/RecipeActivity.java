@@ -3,6 +3,7 @@ package com.example.miriamsrecipes.activities.recipe;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,8 @@ import com.example.miriamsrecipes.databinding.ActivityRecipeBinding;
 public class RecipeActivity extends AppCompatActivity
 		implements StepsFragment.FragmentClickListener, StepsFragment.IngredientClickListener,
 		SingleStepFragment.ChangeStepListener {
+	
+	private final CountingIdlingResource countingIdlingResource = new CountingIdlingResource(RecipeActivity.class.getSimpleName());
 	
 	private ActivityRecipeBinding binding;
 	
@@ -38,13 +41,16 @@ public class RecipeActivity extends AppCompatActivity
 	}
 	
 	private void setUpViewModel() {
+		countingIdlingResource.increment();
 		recipeId = getIntent().getIntExtra(RecipeActivity.class.getSimpleName(), 0);
 		ViewModelFactory factory = new ViewModelFactory(
 				getApplication(),
 				recipeId
 		);
-		ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
+		RecipeViewModel viewModel = ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
+		viewModel.getRecipe().observe(this, recipe -> countingIdlingResource.decrement());
 	}
+	
 	
 	private void initializeFields(boolean newActivity) {
 		masterDetailLayout = getResources().getBoolean(R.bool.master_detail_layout);
@@ -158,5 +164,10 @@ public class RecipeActivity extends AppCompatActivity
 		} else {
 			return super.onSupportNavigateUp();
 		}
+	}
+	
+	
+	public CountingIdlingResource getCountingIdlingResource() {
+		return countingIdlingResource;
 	}
 }

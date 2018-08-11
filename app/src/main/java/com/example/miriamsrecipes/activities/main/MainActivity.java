@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,8 @@ import com.example.miriamsrecipes.datamodel.Recipe;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter.RecipeInfoItemClickListener {
+	
+	private final CountingIdlingResource countingIdlingResource = new CountingIdlingResource(MainActivity.class.getSimpleName());
 	
 	private MainViewModel viewModel;
 	private ActivityMainBinding binding;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 	}
 	
 	private void setUpViewModel() {
+		countingIdlingResource.increment();
 		ViewModelFactory factory = new ViewModelFactory(getApplication());
 		viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
 	}
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 		viewModel.getRecipes().observe(this, recipes -> {
 			recyclerViewAdapter.replaceData(recipes);
 			progressBarVisibility(View.GONE);
+			countingIdlingResource.decrement();
 		});
 	}
 	
@@ -100,5 +105,10 @@ public class MainActivity extends AppCompatActivity implements RecipeInfoAdapter
 				viewModel.getRecipes().getValue().get(listPosition).getId()
 		);
 		startActivity(intent);
+	}
+	
+	
+	public CountingIdlingResource getCountingIdlingResource() {
+		return countingIdlingResource;
 	}
 }
