@@ -20,7 +20,7 @@ import timber.log.Timber;
 
 public final class Model implements IModelContract, Callback<List<Recipe>> {
 	
-	private MutableLiveData<List<Recipe>> allRecipesList;
+	private final MutableLiveData<List<Recipe>> allRecipesList;
 	
 	private final RecipeDao dao;
 	
@@ -52,7 +52,7 @@ public final class Model implements IModelContract, Callback<List<Recipe>> {
 	
 	
 	private void populateDatabase() {
-		dao.checkDatabase()
+		dao.getAllRecipes()
 				.subscribeOn(Schedulers.io())
 				.doOnError((onError) -> {throw new SQLException("Error checking the database.\n%s", onError);})
 				.doOnSuccess((recipeList -> {

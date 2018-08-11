@@ -2,13 +2,13 @@ package com.example.miriamsrecipes.datamodel;
 
 public class StepItem {
 	
-	private int id;
+	private final int id;
 	
-	private String shortDescription;
-	private String description;
+	private final String shortDescription;
+	private final String description;
 	
-	private String videoURL;
-	private String thumbnailURL;
+	private final String videoURL;
+	private final String thumbnailURL;
 	
 	
 	public StepItem(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {

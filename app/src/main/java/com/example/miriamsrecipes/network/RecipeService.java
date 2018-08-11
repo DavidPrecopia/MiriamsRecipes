@@ -7,7 +7,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface RecipeService {
+interface RecipeService {
 	@GET(UrlManager.BAKING_JSON)
 	Call<List<Recipe>> getRecipes();
 }

@@ -17,19 +17,11 @@ import static com.example.miriamsrecipes.model.DatabaseContract.TABLE_NAME_RECIP
 
 @Dao
 interface RecipeDao {
-	@Query("SELECT  * FROM  " + TABLE_NAME_RECIPE)
-	LiveData<List<Recipe>> getAllRecipes();
+	@Query("SELECT * FROM " + TABLE_NAME_RECIPE)
+	Maybe<List<Recipe>> getAllRecipes();
 	
 	@Query("SELECT * FROM " + TABLE_NAME_RECIPE + " WHERE " + COLUMN_RECIPE_ID + " = :recipeId")
 	LiveData<Recipe> getSingleRecipe(int recipeId);
-
-
-	/**
-	 * A simple query to determine whether or not
-	 * the database is empty.
-	 */
-	@Query("SELECT * FROM " + TABLE_NAME_RECIPE)
-	Maybe<List<Recipe>> checkDatabase();
 	
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	Long[] insertRecipe(List<Recipe> recipeList);

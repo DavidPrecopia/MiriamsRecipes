@@ -14,23 +14,23 @@ public class Recipe {
 	
 	@PrimaryKey
 	@ColumnInfo(name = DatabaseContract.COLUMN_RECIPE_ID)
-	private int id;
+	private final int id;
 	
 	@ColumnInfo(name = DatabaseContract.COLUMN_NAME)
-	private String name;
+	private final String name;
 	
 	@ColumnInfo(name = DatabaseContract.COLUMN_SERVINGS)
-	private int servings;
+	private final int servings;
 	
 	@ColumnInfo(name = DatabaseContract.COLUMN_IMAGE)
-	private String image;
+	private final String image;
 	
 	
 	@TypeConverters(IngredientsItemTypeConverter.class)
-	private List<IngredientsItem> ingredients;
+	private final List<IngredientsItem> ingredients;
 	
 	@TypeConverters(StepItemTypeConverter.class)
-	private List<StepItem> steps;
+	private final List<StepItem> steps;
 	
 	
 	public Recipe(int id, String name, int servings, String image, List<IngredientsItem> ingredients, List<StepItem> steps) {

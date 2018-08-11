@@ -2,10 +2,10 @@ package com.example.miriamsrecipes.datamodel;
 
 public class IngredientsItem {
 	
-	private double quantity;
-	private String measure;
+	private final double quantity;
+	private final String measure;
 	
-	private String ingredient;
+	private final String ingredient;
 	
 	
 	public IngredientsItem(double quantity, String measure, String ingredient) {

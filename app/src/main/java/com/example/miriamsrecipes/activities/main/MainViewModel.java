@@ -17,7 +17,7 @@ import timber.log.Timber;
 
 final class MainViewModel extends AndroidViewModel {
 	
-	private MutableLiveData<List<Recipe>> recipes;
+	private final MutableLiveData<List<Recipe>> recipes;
 	private final Observer<List<Recipe>> observer;
 	
 	private final IModelContract model;

@@ -20,7 +20,7 @@ final class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteVi
 	private final Application application;
 	
 	private final int recipeId;
-	private List<IngredientsItem> ingredients;
+	private final List<IngredientsItem> ingredients;
 	
 	private final AppWidgetManager appWidgetManager;
 	private final IModelContract model;

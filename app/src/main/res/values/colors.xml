@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<color name="colorPrimary">#FF5722</color>
 	<color name="colorPrimaryDark">#E64A19</color>
 	<color name="colorAccent">#536DFE</color>
 	
 	<color name="white">#FFFFFF</color>
+	<color name="black">#000000</color>
 	<color name="green">#80008000</color>
 	
-	<color name="exoPlayerControls">@color/colorPrimary</color>
-	<color name="black">#000000</color>
+	<color name="exoPlayerControls" tools:keep="@color/exoPlayerControls">@color/colorPrimary</color>
 </resources>

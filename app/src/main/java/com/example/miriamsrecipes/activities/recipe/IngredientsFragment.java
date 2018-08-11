@@ -137,7 +137,7 @@ public class IngredientsFragment extends Fragment {
 		
 		final class IngredientViewHolder extends RecyclerView.ViewHolder {
 			
-			private ListItemIngredientBinding binding;
+			private final ListItemIngredientBinding binding;
 			
 			IngredientViewHolder(ListItemIngredientBinding binding) {
 				super(binding.getRoot());
